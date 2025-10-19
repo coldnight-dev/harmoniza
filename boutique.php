@@ -113,76 +113,83 @@ include 'includes/header.php';
 </div>
 
 <script>
-let currentView = 'grid';
-let currentFilters = {
-    category: 'all',
-    intention: 'all',
-    sort: 'featured'
-};
-
-// Charger les produits
-loadData().then(data => {
-    // Lire les paramètres URL
-    const urlParams = getURLParams();
-    
-    // Appliquer les filtres depuis l'URL
-    if (urlParams.category !== 'all') {
-        document.getElementById('categoryFilter').value = urlParams.category;
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof loadData === 'undefined' || typeof filterProducts === 'undefined') {
+        console.error('Scripts non chargés, retry...');
+        setTimeout(initBoutique, 100);
+        return;
     }
-    if (urlParams.intention !== 'all') {
-        document.getElementById('intentionFilter').value = urlParams.intention;
-    }
-    if (urlParams.stone) {
-        // Filtrer par pierre si spécifié
-        currentFilters.stone = urlParams.stone;
-    }
-    
-    applyFilters();
+    initBoutique();
 });
 
-function applyFilters() {
-    currentFilters = {
-        category: document.getElementById('categoryFilter').value,
-        intention: document.getElementById('intentionFilter').value,
-        sort: document.getElementById('sortFilter').value
+function initBoutique() {
+    let currentView = 'grid';
+    let currentFilters = {
+        category: 'all',
+        intention: 'all',
+        sort: 'featured'
     };
 
-    const filtered = filterProducts(currentFilters);
-    displayProducts(filtered, 'productsGrid');
-    
-    // Mettre à jour le compteur
-    const count = filtered.length;
-    document.getElementById('resultsCount').innerHTML = `
-        <i class="fas fa-box mr-1"></i>${count} produit${count > 1 ? 's' : ''} trouvé${count > 1 ? 's' : ''}
-    `;
+    loadData().then(data => {
+        const urlParams = getURLParams();
+        
+        if (urlParams.category !== 'all') {
+            document.getElementById('categoryFilter').value = urlParams.category;
+        }
+        if (urlParams.intention !== 'all') {
+            document.getElementById('intentionFilter').value = urlParams.intention;
+        }
+        if (urlParams.stone) {
+            currentFilters.stone = urlParams.stone;
+        }
+        
+        applyFilters();
+    });
 
-    // Afficher/masquer le message "pas de résultats"
-    document.getElementById('noResults').classList.toggle('hidden', count > 0);
-    document.getElementById('productsGrid').classList.toggle('hidden', count === 0);
+    window.applyFilters = function() {
+        currentFilters = {
+            category: document.getElementById('categoryFilter').value,
+            intention: document.getElementById('intentionFilter').value,
+            sort: document.getElementById('sortFilter').value
+        };
 
-    // Mettre à jour l'URL
-    updateURL(currentFilters);
-}
+        const filtered = filterProducts(currentFilters);
+        displayProducts(filtered, 'productsGrid');
+        
+        const count = filtered.length;
+        document.getElementById('resultsCount').innerHTML = `
+            <i class="fas fa-box mr-1"></i>${count} produit${count > 1 ? 's' : ''} trouvé${count > 1 ? 's' : ''}
+        `;
 
-function resetFilters() {
-    document.getElementById('categoryFilter').value = 'all';
-    document.getElementById('intentionFilter').value = 'all';
-    document.getElementById('sortFilter').value = 'featured';
-    applyFilters();
-}
+        document.getElementById('noResults').classList.toggle('hidden', count > 0);
+        document.getElementById('productsGrid').classList.toggle('hidden', count === 0);
 
-function toggleView(view) {
-    currentView = view;
-    const grid = document.getElementById('productsGrid');
-    
-    if (view === 'list') {
-        grid.classList.remove('md:grid-cols-2', 'xl:grid-cols-3');
-        grid.classList.add('grid-cols-1');
-        document.getElementById('listViewBtn').classList.add('bg-pink-50');
-        document.getElementById('gridViewBtn').classList.remove('bg-pink-50');
-    } else {
-        grid.classList.add('md:grid-cols-2', 'xl:grid-cols-3');
-        grid.classList.remove('grid-cols-1');
+        updateURL(currentFilters);
+    };
+
+    window.resetFilters = function() {
+        document.getElementById('categoryFilter').value = 'all';
+        document.getElementById('intentionFilter').value = 'all';
+        document.getElementById('sortFilter').value = 'featured';
+        applyFilters();
+    };
+
+    window.toggleView = function(view) {
+        currentView = view;
+        const grid = document.getElementById('productsGrid');
+        
+        if (view === 'list') {
+            grid.classList.remove('md:grid-cols-2', 'xl:grid-cols-3');
+            grid.classList.add('grid-cols-1');
+            document.getElementById('listViewBtn').classList.add('bg-pink-50');
+            document.getElementById('gridViewBtn').classList.remove('bg-pink-50');
+        } else {
+            grid.classList.add('md:grid-cols-2', 'xl:grid-cols-3');
+            grid.classList.remove('grid-cols-1');
+            document.getElementById('gridViewBtn').classList.add('bg-pink-50');
+            document.getElementById('listViewBtn').classList.remove('bg-pink-50');
+        }
+    };
 }
 </script>
 

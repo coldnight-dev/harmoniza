@@ -63,7 +63,6 @@ include 'includes/header.php';
 </div>
 
 <script>
-// Attendre que les scripts soient chargés
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof loadData === 'undefined') {
         console.error('main.js pas encore chargé, retry...');
@@ -130,7 +129,6 @@ function initIntentions() {
     loadData().then(data => {
         createIntentionCards();
         
-        // Lire l'intention depuis l'URL
         const urlParams = new URLSearchParams(window.location.search);
         const intention = urlParams.get('intention');
         if (intention && intentionData[intention]) {
@@ -170,17 +168,14 @@ function initIntentions() {
         const info = intentionData[intention];
         currentIntentionData = { intention, ...info };
 
-        // Mettre à jour le titre et description
         document.getElementById('intentionTitle').innerHTML = `
             <i class="fas fa-${info.icon} mr-3"></i>
             ${info.title}
         `;
         document.getElementById('intentionDescription').textContent = info.description;
 
-        // Afficher les résultats
         document.getElementById('intentionResults').classList.remove('hidden');
 
-        // Charger les données
         loadData().then(data => {
             const stones = data.stones.filter(s => s.intentions.includes(intention));
             const products = data.products.filter(p => p.intentions.includes(intention));
@@ -188,14 +183,12 @@ function initIntentions() {
             displayStones(stones, 'recommendedStones');
             displayProducts(products, 'recommendedProducts');
 
-            // Scroll vers les résultats
             document.getElementById('intentionResults').scrollIntoView({ 
                 behavior: 'smooth',
                 block: 'start'
             });
         });
 
-        // Mettre à jour l'URL
         const url = new URL(window.location);
         url.searchParams.set('intention', intention);
         window.history.pushState({}, '', url);
@@ -216,150 +209,6 @@ function initIntentions() {
             alert(`${products.length} produits ajoutés au panier !`);
         });
     };
-}
-</script>
-
-<?php include 'includes/footer.php'; ?>
-    'amour': {
-        title: 'Amour & Relations',
-        description: 'Ouvrez votre cœur, cultivez l\'amour de soi et attirez des relations harmonieuses',
-        icon: 'heart',
-        color: 'pink'
-    },
-    'protection': {
-        title: 'Protection Énergétique',
-        description: 'Créez un bouclier contre les énergies négatives et restez ancré',
-        icon: 'shield-alt',
-        color: 'purple'
-    },
-    'ancrage': {
-        title: 'Ancrage & Stabilité',
-        description: 'Connectez-vous à la terre et trouvez votre équilibre intérieur',
-        icon: 'tree',
-        color: 'green'
-    },
-    'abondance': {
-        title: 'Abondance & Prospérité',
-        description: 'Attirez l\'abondance sous toutes ses formes et manifestez vos objectifs',
-        icon: 'coins',
-        color: 'yellow'
-    },
-    'serenite': {
-        title: 'Sérénité & Paix',
-        description: 'Apaisez votre mental et trouvez la paix intérieure',
-        icon: 'spa',
-        color: 'blue'
-    },
-    'chance': {
-        title: 'Chance & Opportunités',
-        description: 'Ouvrez-vous aux opportunités et attirez la chance',
-        icon: 'clover',
-        color: 'emerald'
-    },
-    'intuition': {
-        title: 'Intuition & Sagesse',
-        description: 'Développez votre sixième sens et accédez à votre sagesse intérieure',
-        icon: 'eye',
-        color: 'indigo'
-    },
-    'creativite': {
-        title: 'Créativité & Expression',
-        description: 'Libérez votre créativité et exprimez votre authenticité',
-        icon: 'palette',
-        color: 'orange'
-    }
-};
-
-let currentIntentionData = {};
-
-loadData().then(data => {
-    createIntentionCards();
-    
-    // Lire l'intention depuis l'URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const intention = urlParams.get('intention');
-    if (intention && intentionData[intention]) {
-        showIntentionResults(intention);
-    }
-});
-
-function createIntentionCards() {
-    const container = document.getElementById('intentionCards');
-    
-    const colorMap = {
-        'pink': 'bg-pink-50 hover:bg-pink-100 border-pink-200 text-pink-600',
-        'purple': 'bg-purple-50 hover:bg-purple-100 border-purple-200 text-purple-600',
-        'green': 'bg-green-50 hover:bg-green-100 border-green-200 text-green-600',
-        'yellow': 'bg-yellow-50 hover:bg-yellow-100 border-yellow-200 text-yellow-600',
-        'blue': 'bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-600',
-        'emerald': 'bg-emerald-50 hover:bg-emerald-100 border-emerald-200 text-emerald-600',
-        'indigo': 'bg-indigo-50 hover:bg-indigo-100 border-indigo-200 text-indigo-600',
-        'orange': 'bg-orange-50 hover:bg-orange-100 border-orange-200 text-orange-600'
-    };
-    
-    Object.entries(intentionData).forEach(([slug, data]) => {
-        const colors = colorMap[data.color] || colorMap['pink'];
-        container.innerHTML += `
-            <button onclick="showIntentionResults('${slug}')" 
-                class="intention-card flex flex-col items-center p-6 rounded-xl hover:shadow-lg transition ${colors} border-2">
-                <i class="fas fa-${data.icon} text-4xl mb-3"></i>
-                <span class="font-semibold text-center">${data.title.split(' & ')[0]}</span>
-            </button>
-        `;
-    });
-}
-
-function showIntentionResults(intention) {
-    if (!intentionData[intention]) return;
-
-    const info = intentionData[intention];
-    currentIntentionData = { intention, ...info };
-
-    // Mettre à jour le titre et description
-    document.getElementById('intentionTitle').innerHTML = `
-        <i class="fas fa-${info.icon} mr-3 text-${info.color}-600"></i>
-        ${info.title}
-    `;
-    document.getElementById('intentionDescription').textContent = info.description;
-
-    // Afficher les résultats
-    document.getElementById('intentionResults').classList.remove('hidden');
-
-    // Charger les données
-    loadData().then(data => {
-        const stones = data.stones.filter(s => s.intentions.includes(intention));
-        const products = data.products.filter(p => p.intentions.includes(intention));
-
-        displayStones(stones, 'recommendedStones');
-        displayProducts(products, 'recommendedProducts');
-
-        // Scroll vers les résultats
-        document.getElementById('intentionResults').scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start'
-        });
-    });
-
-    // Mettre à jour l'URL
-    const url = new URL(window.location);
-    url.searchParams.set('intention', intention);
-    window.history.pushState({}, '', url);
-}
-
-function addAllToCart() {
-    if (!currentIntentionData.intention) return;
-
-    loadData().then(data => {
-        const products = data.products.filter(p => 
-            p.intentions.includes(currentIntentionData.intention)
-        );
-
-        products.forEach(product => {
-            Cart.add(product, 1);
-        });
-
-        alert(`${products.length} produits ajoutés au panier !`);
-    });
 }
 </script>
 

@@ -5,7 +5,7 @@
     "category": "bracelet",
     "price": 10.00,
     "images": [
-      "https://via.placeholder.com/600x600/f8e5d0/d4af37?text=Bracelet+Chance"
+      "https://placehold.co/600x600/f8e5d0/d4af37?text=Bracelet+Chance"
     ],
     "stones": ["citrine", "oeil-de-tigre", "pyrite"],
     "intentions": ["abondance", "chance", "protection"],
@@ -19,7 +19,7 @@
     "category": "bracelet",
     "price": 12.00,
     "images": [
-      "https://via.placeholder.com/600x600/ffc0cb/ff69b4?text=Bracelet+Amour"
+      "https://placehold.co/600x600/ffc0cb/ff69b4?text=Bracelet+Amour"
     ],
     "stones": ["quartz-rose", "rhodonite"],
     "intentions": ["amour", "paix", "sérénité"],
@@ -33,7 +33,7 @@
     "category": "bracelet",
     "price": 11.00,
     "images": [
-      "https://via.placeholder.com/600x600/2c2c2c/ffffff?text=Bracelet+Protection"
+      "https://placehold.co/600x600/2c2c2c/ffffff?text=Bracelet+Protection"
     ],
     "stones": ["onyx", "obsidienne", "tourmaline-noire"],
     "intentions": ["protection", "ancrage", "force"],
@@ -47,7 +47,7 @@
     "category": "bracelet",
     "price": 13.00,
     "images": [
-      "https://via.placeholder.com/600x600/9370db/8a2be2?text=Bracelet+Serenite"
+      "https://placehold.co/600x600/9370db/8a2be2?text=Bracelet+Serenite"
     ],
     "stones": ["amethyste", "lepidolite"],
     "intentions": ["sérénité", "intuition", "sommeil"],
@@ -61,7 +61,7 @@
     "category": "bracelet",
     "price": 10.00,
     "images": [
-      "https://via.placeholder.com/600x600/cd5c5c/8b0000?text=Bracelet+Ancrage"
+      "https://placehold.co/600x600/cd5c5c/8b0000?text=Bracelet+Ancrage"
     ],
     "stones": ["jaspe-rouge", "hematite"],
     "intentions": ["ancrage", "vitalité", "force"],
@@ -75,7 +75,7 @@
     "category": "collier",
     "price": 18.00,
     "images": [
-      "https://via.placeholder.com/600x600/ffd700/ff8c00?text=Collier+7+Chakras"
+      "https://placehold.co/600x600/ffd700/ff8c00?text=Collier+7+Chakras"
     ],
     "stones": ["jaspe-rouge", "cornaline", "citrine", "aventurine", "sodalite", "amethyste", "quartz"],
     "intentions": ["équilibre", "harmonie", "énergie"],
@@ -89,7 +89,7 @@
     "category": "collier",
     "price": 22.00,
     "images": [
-      "https://via.placeholder.com/600x600/4682b4/1e90ff?text=Collier+Labradorite"
+      "https://placehold.co/600x600/4682b4/1e90ff?text=Collier+Labradorite"
     ],
     "stones": ["labradorite", "pierre-de-lune"],
     "intentions": ["intuition", "protection", "féminité"],
@@ -103,7 +103,7 @@
     "category": "collier",
     "price": 25.00,
     "images": [
-      "https://via.placeholder.com/600x600/ffbf00/ff8c00?text=Collier+Ambre"
+      "https://placehold.co/600x600/ffbf00/ff8c00?text=Collier+Ambre"
     ],
     "stones": ["ambre", "citrine"],
     "intentions": ["joie", "vitalité", "guérison"],
@@ -117,7 +117,7 @@
     "category": "pierre",
     "price": 35.00,
     "images": [
-      "https://via.placeholder.com/600x600/9370db/4b0082?text=Geode+Amethyste"
+      "https://placehold.co/600x600/9370db/4b0082?text=Geode+Amethyste"
     ],
     "stones": ["amethyste"],
     "intentions": ["sérénité", "purification", "méditation"],
@@ -131,7 +131,7 @@
     "category": "pierre",
     "price": 8.00,
     "images": [
-      "https://via.placeholder.com/600x600/ffc0cb/ff1493?text=Quartz+Rose"
+      "https://placehold.co/600x600/ffc0cb/ff1493?text=Quartz+Rose"
     ],
     "stones": ["quartz-rose"],
     "intentions": ["amour", "douceur", "tendresse"],
@@ -145,7 +145,7 @@
     "category": "pierre",
     "price": 12.00,
     "images": [
-      "https://via.placeholder.com/600x600/000000/87ceeb?text=Obsidienne"
+      "https://placehold.co/600x600/000000/87ceeb?text=Obsidienne"
     ],
     "stones": ["obsidienne"],
     "intentions": ["protection", "vérité", "introspection"],
@@ -159,7 +159,7 @@
     "category": "pierre",
     "price": 15.00,
     "images": [
-      "https://via.placeholder.com/600x600/f0f8ff/ffffff?text=Selenite"
+      "https://placehold.co/600x600/f0f8ff/ffffff?text=Selenite"
     ],
     "stones": ["selenite"],
     "intentions": ["purification", "clarté", "paix"],
@@ -173,7 +173,7 @@
     "category": "bracelet",
     "price": 11.00,
     "images": [
-      "https://via.placeholder.com/600x600/ff7f50/ff4500?text=Bracelet+Creativite"
+      "https://placehold.co/600x600/ff7f50/ff4500?text=Bracelet+Creativite"
     ],
     "stones": ["cornaline", "oeil-de-tigre"],
     "intentions": ["créativité", "confiance", "motivation"],
@@ -187,7 +187,7 @@
     "category": "bracelet",
     "price": 12.00,
     "images": [
-      "https://via.placeholder.com/600x600/4169e1/000080?text=Bracelet+Communication"
+      "https://placehold.co/600x600/4169e1/000080?text=Bracelet+Communication"
     ],
     "stones": ["sodalite", "lapis-lazuli"],
     "intentions": ["communication", "vérité", "expression"],
@@ -201,7 +201,7 @@
     "category": "collier",
     "price": 16.00,
     "images": [
-      "https://via.placeholder.com/600x600/50c878/228b22?text=Collier+Guerison"
+      "https://placehold.co/600x600/50c878/228b22?text=Collier+Guerison"
     ],
     "stones": ["aventurine", "jade"],
     "intentions": ["guérison", "prospérité", "santé"],
@@ -215,7 +215,7 @@
     "category": "pierre",
     "price": 28.00,
     "images": [
-      "https://via.placeholder.com/600x600/b8860b/ffd700?text=Pyrite"
+      "https://placehold.co/600x600/b8860b/ffd700?text=Pyrite"
     ],
     "stones": ["pyrite"],
     "intentions": ["abondance", "protection", "volonté"],

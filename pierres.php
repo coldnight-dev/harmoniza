@@ -67,7 +67,6 @@ include 'includes/header.php';
 </div>
 
 <script>
-// Attendre que les scripts soient chargés
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof loadData === 'undefined') {
         console.error('main.js pas encore chargé, retry...');
@@ -86,147 +85,140 @@ function initPierres() {
         allStones = data.stones;
         filteredStones = allStones;
         
-        // Créer les filtres d'intention
         createIntentionFilters();
-        
-        // Créer l'index alphabétique
         createAlphaIndex();
-        
-        // Afficher toutes les pierres
         displayStones(allStones, 'stonesGrid');
     });
 
     window.createIntentionFilters = function() {
-    const intentions = new Set();
-    allStones.forEach(stone => {
-        stone.intentions.forEach(int => intentions.add(int));
-    });
+        const intentions = new Set();
+        allStones.forEach(stone => {
+            stone.intentions.forEach(int => intentions.add(int));
+        });
 
-    const container = document.getElementById('intentionFilters');
-    const existingButtons = container.innerHTML;
-    
-    Array.from(intentions).sort().forEach(intention => {
-        container.innerHTML += `
-            <button onclick="filterStonesByIntention('${intention}')" 
-                class="filter-btn px-4 py-2 rounded-full border-2 border-gray-300 hover:border-pink-300 hover:bg-pink-50 transition font-semibold text-sm">
-                ${intention}
-            </button>
-        `;
-    });
-}
-
-function filterStonesByIntention(intention) {
-    currentIntention = intention;
-    
-    // Mettre à jour les boutons actifs
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.remove('active', 'bg-pink-50', 'border-pink-300');
-        btn.classList.add('border-gray-300');
-    });
-    event.target.classList.add('active', 'bg-pink-50', 'border-pink-300');
-    event.target.classList.remove('border-gray-300');
-
-    if (intention === 'all') {
-        filteredStones = allStones;
-    } else {
-        filteredStones = allStones.filter(s => s.intentions.includes(intention));
-    }
-
-    displayStones(filteredStones, 'stonesGrid');
-    updateNoResultsMessage();
-}
-
-function searchStones(query) {
-    if (query.length < 2) {
-        filteredStones = currentIntention === 'all' 
-            ? allStones 
-            : allStones.filter(s => s.intentions.includes(currentIntention));
-    } else {
-        const q = query.toLowerCase();
-        const baseStones = currentIntention === 'all' 
-            ? allStones 
-            : allStones.filter(s => s.intentions.includes(currentIntention));
+        const container = document.getElementById('intentionFilters');
         
-        filteredStones = baseStones.filter(s => 
-            s.name.toLowerCase().includes(q) ||
-            s.virtues.toLowerCase().includes(q) ||
-            s.origin.toLowerCase().includes(q)
-        );
-    }
+        Array.from(intentions).sort().forEach(intention => {
+            container.innerHTML += `
+                <button onclick="filterStonesByIntention('${intention}')" 
+                    class="filter-btn px-4 py-2 rounded-full border-2 border-gray-300 hover:border-pink-300 hover:bg-pink-50 transition font-semibold text-sm">
+                    ${intention}
+                </button>
+            `;
+        });
+    };
 
-    displayStones(filteredStones, 'stonesGrid');
-    updateNoResultsMessage();
-}
+    window.filterStonesByIntention = function(intention) {
+        currentIntention = intention;
+        
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active', 'bg-pink-50', 'border-pink-300');
+            btn.classList.add('border-gray-300');
+        });
+        event.target.classList.add('active', 'bg-pink-50', 'border-pink-300');
+        event.target.classList.remove('border-gray-300');
 
-function updateNoResultsMessage() {
-    const hasResults = filteredStones.length > 0;
-    document.getElementById('stonesGrid').classList.toggle('hidden', !hasResults);
-    document.getElementById('noStonesFound').classList.toggle('hidden', hasResults);
-}
-
-function createAlphaIndex() {
-    const letters = new Set();
-    allStones.forEach(stone => {
-        letters.add(stone.name[0].toUpperCase());
-    });
-
-    const container = document.getElementById('alphaIndex');
-    Array.from(letters).sort().forEach(letter => {
-        container.innerHTML += `
-            <button onclick="scrollToLetter('${letter}')" 
-                class="w-10 h-10 rounded-full border-2 border-purple-300 hover:bg-purple-100 font-bold transition">
-                ${letter}
-            </button>
-        `;
-    });
-}
-
-function scrollToLetter(letter) {
-    const stone = allStones.find(s => s.name[0].toUpperCase() === letter);
-    if (stone) {
-        const element = document.querySelector(`[data-stone="${stone.slug}"]`);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            element.classList.add('ring-4', 'ring-purple-300');
-            setTimeout(() => {
-                element.classList.remove('ring-4', 'ring-purple-300');
-            }, 2000);
+        if (intention === 'all') {
+            filteredStones = allStones;
+        } else {
+            filteredStones = allStones.filter(s => s.intentions.includes(intention));
         }
+
+        displayStones(filteredStones, 'stonesGrid');
+        updateNoResultsMessage();
+    };
+
+    window.searchStones = function(query) {
+        if (query.length < 2) {
+            filteredStones = currentIntention === 'all' 
+                ? allStones 
+                : allStones.filter(s => s.intentions.includes(currentIntention));
+        } else {
+            const q = query.toLowerCase();
+            const baseStones = currentIntention === 'all' 
+                ? allStones 
+                : allStones.filter(s => s.intentions.includes(currentIntention));
+            
+            filteredStones = baseStones.filter(s => 
+                s.name.toLowerCase().includes(q) ||
+                s.virtues.toLowerCase().includes(q) ||
+                s.origin.toLowerCase().includes(q)
+            );
+        }
+
+        displayStones(filteredStones, 'stonesGrid');
+        updateNoResultsMessage();
+    };
+
+    function updateNoResultsMessage() {
+        const hasResults = filteredStones.length > 0;
+        document.getElementById('stonesGrid').classList.toggle('hidden', !hasResults);
+        document.getElementById('noStonesFound').classList.toggle('hidden', hasResults);
     }
-}
 
-// Override de displayStones pour ajouter l'attribut data
-function displayStones(stones, containerId = 'stonesGrid') {
-    const container = document.getElementById(containerId);
-    if (!container) return;
+    function createAlphaIndex() {
+        const letters = new Set();
+        allStones.forEach(stone => {
+            letters.add(stone.name[0].toUpperCase());
+        });
 
-    if (stones.length === 0) {
-        container.innerHTML = '';
-        return;
+        const container = document.getElementById('alphaIndex');
+        Array.from(letters).sort().forEach(letter => {
+            container.innerHTML += `
+                <button onclick="scrollToLetter('${letter}')" 
+                    class="w-10 h-10 rounded-full border-2 border-purple-300 hover:bg-purple-100 font-bold transition">
+                    ${letter}
+                </button>
+            `;
+        });
     }
 
-    container.innerHTML = stones.map(s => `
-        <div class="stone-card transition" data-stone="${s.slug}" data-aos="fade-up">
-            <img src="${s.image}" alt="${s.name}" loading="lazy">
-            <h3>${s.name}</h3>
-            <p class="text-sm text-gray-600 mb-2">
-                <i class="fas fa-map-marker-alt text-pink-500 mr-1"></i>
-                ${s.origin}
-            </p>
-            <p class="text-sm text-gray-700 mb-3">${s.virtues.substring(0, 150)}...</p>
-            <div class="flex flex-wrap gap-2 mb-4">
-                ${s.intentions.slice(0, 3).map(i => `<span class="tag">${i}</span>`).join('')}
+    window.scrollToLetter = function(letter) {
+        const stone = allStones.find(s => s.name[0].toUpperCase() === letter);
+        if (stone) {
+            const element = document.querySelector(`[data-stone="${stone.slug}"]`);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                element.classList.add('ring-4', 'ring-purple-300');
+                setTimeout(() => {
+                    element.classList.remove('ring-4', 'ring-purple-300');
+                }, 2000);
+            }
+        }
+    };
+
+    window.displayStones = function(stones, containerId = 'stonesGrid') {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        if (stones.length === 0) {
+            container.innerHTML = '';
+            return;
+        }
+
+        container.innerHTML = stones.map(s => `
+            <div class="stone-card transition" data-stone="${s.slug}" data-aos="fade-up">
+                <img src="${s.image}" alt="${s.name}" loading="lazy">
+                <h3>${s.name}</h3>
+                <p class="text-sm text-gray-600 mb-2">
+                    <i class="fas fa-map-marker-alt text-pink-500 mr-1"></i>
+                    ${s.origin}
+                </p>
+                <p class="text-sm text-gray-700 mb-3">${s.virtues.substring(0, 150)}...</p>
+                <div class="flex flex-wrap gap-2 mb-4">
+                    ${s.intentions.slice(0, 3).map(i => `<span class="tag">${i}</span>`).join('')}
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="showStoneDetail('${s.slug}')" class="btn btn-primary flex-1 text-sm">
+                        <i class="fas fa-info-circle mr-1"></i>Détails
+                    </button>
+                    <button onclick="findProductsWithStone('${s.slug}')" class="btn btn-outline text-sm">
+                        <i class="fas fa-shopping-bag"></i>
+                    </button>
+                </div>
             </div>
-            <div class="flex gap-2">
-                <button onclick="showStoneDetail('${s.slug}')" class="btn btn-primary flex-1 text-sm">
-                    <i class="fas fa-info-circle mr-1"></i>Détails
-                </button>
-                <button onclick="findProductsWithStone('${s.slug}')" class="btn btn-outline text-sm">
-                    <i class="fas fa-shopping-bag"></i>
-                </button>
-            </div>
-        </div>
-    `).join('');
+        `).join('');
+    };
 }
 </script>
 

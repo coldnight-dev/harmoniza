@@ -9,7 +9,7 @@
     <!-- PWA -->
     <link rel="manifest" href="https://app.santementale.org/harmoniza/manifest.json">
     <meta name="theme-color" content="#f8b4d9">
-    <link rel="icon" type="image/png" href="https://via.placeholder.com/32x32/f8b4d9/ffffff?text=HZ">
+    <link rel="icon" type="image/png" href="https://placehold.co/32x32/f8b4d9/ffffff?text=HZ">
     
     <!-- Styles -->
     <script src="https://cdn.tailwindcss.com"></script>

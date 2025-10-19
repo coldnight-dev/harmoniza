@@ -10,13 +10,13 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "https://via.placeholder.com/192x192/f8b4d9/ffffff?text=HZ",
+      "src": "https://placehold.co/192x192/f8b4d9/ffffff?text=HZ",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "https://via.placeholder.com/512x512/f8b4d9/ffffff?text=HZ",
+      "src": "https://placehold.co/512x512/f8b4d9/ffffff?text=HZ",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
