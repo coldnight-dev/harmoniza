@@ -1,1 +1,33 @@
-{"order_id":"HZ-20251019-211203-ABCD","created_at":"2025-10-19T21:12:03Z","status":"en_attente","buyer":{"name":"Prénom Nom","phone":"+33123456789","notes":"Profil FB: ..."},"items":[{"slug":"bracelet-chance-abondance","name":"Bracelet Chance & Abondance","qty":1,"unit_price":10.00,"line_total":10.00}],"subtotal":10.00,"total":10.00,"meta":{"client_ip":"1.2.3.4","user_agent":"...","server_received_at":"2025-10-19T21:12:04Z"}}
+{
+  "order_id": "HZ-20251018-214503-A3F2",
+  "created_at": "2025-10-18T21:45:03Z",
+  "status": "en_attente",
+  "buyer": {
+    "name": "Marie Dupont",
+    "phone": "+33612345678",
+    "notes": "Profil FB: @marie.dupont - Livraison rapide SVP"
+  },
+  "items": [
+    {
+      "slug": "bracelet-chance-abondance",
+      "name": "Bracelet Chance & Abondance",
+      "qty": 1,
+      "unit_price": 10.00,
+      "line_total": 10.00
+    },
+    {
+      "slug": "pierre-amethyste-geode",
+      "name": "Géode d'Améthyste",
+      "qty": 1,
+      "unit_price": 35.00,
+      "line_total": 35.00
+    }
+  ],
+  "subtotal": 45.00,
+  "total": 45.00,
+  "meta": {
+    "client_ip": "192.168.1.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "server_received_at": "2025-10-18T21:45:04Z"
+  }
+}

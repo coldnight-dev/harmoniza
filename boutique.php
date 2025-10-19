@@ -1,79 +1,192 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boutique - Harmon'Iza</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="manifest" href="manifest.json">
-</head>
-<body class="bg-gray-50">
-    <header class="bg-pink-100 p-4 text-center sticky top-0 z-50">
-        <a href="index.php" class="text-2xl font-playfair text-yellow-600">Harmon'Iza</a>
-        <a href="commande.php" class="float-right bg-pink-300 px-4 py-2 rounded">🛒 <span id="cart-count">0</span></a>
-    </header>
+<?php
+/**
+ * Harmon'Iza - Boutique
+ */
+$pageTitle = "Boutique - Harmon'Iza";
+$pageDescription = "Découvrez notre collection de bijoux et pierres énergétiques";
+include 'includes/header.php';
+?>
 
-    <section class="p-4">
-        <h1 class="text-3xl font-playfair text-yellow-600 text-center mb-6">Boutique</h1>
-        
-        <div class="filters bg-white p-4 rounded-lg shadow mb-6">
-            <select id="intention" class="mr-2 p-2 border rounded">
-                <option value="">Toutes intentions</option>
-                <option value="amour">Amour</option>
-                <option value="protection">Protection</option>
-                <option value="ancrage">Ancrage</option>
-                <option value="abondance">Abondance</option>
-                <option value="serenite">Sérénité</option>
-                <option value="chance">Chance</option>
-            </select>
-            <select id="sort" class="p-2 border rounded" onchange="sortProducts()">
-                <option value="new">Nouveautés</option>
-                <option value="price-asc">Prix croissant</option>
-                <option value="price-desc">Prix décroissant</option>
-            </select>
-        </div>
+<div class="bg-gradient-to-r from-pink-50 to-purple-50 py-12">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl md:text-5xl font-bold text-center mb-4" style="font-family: 'Playfair Display', serif; color: var(--primary-dark);" data-aos="fade-up">
+            Notre Boutique
+        </h1>
+        <p class="text-center text-gray-600 text-lg max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+            Explorez notre sélection de bijoux et pierres naturelles
+        </p>
+    </div>
+</div>
 
-        <div id="products-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
-    </section>
-
-    <script src="js/main.js"></script>
-    <script src="js/cart.js"></script>
-    <script>
-        let products = [];
-        fetch('data/products.json').then(r=>r.json()).then(data => {
-            products = data;
-            renderProducts();
-            updateCartCount();
-        });
-
-        function renderProducts() {
-            const grid = document.getElementById('products-grid');
-            let filtered = products;
-            
-            const intention = document.getElementById('intention').value;
-            if (intention) filtered = filtered.filter(p => p.intention === intention);
-            
-            const sort = document.getElementById('sort').value;
-            filtered.sort((a,b) => sort === 'price-asc' ? a.price - b.price : 
-                                sort === 'price-desc' ? b.price - a.price : 0);
-
-            grid.innerHTML = filtered.map(p => `
-                <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg">
-                    <img src="${p.images[0]}" loading="lazy" class="w-full h-32 object-cover rounded">
-                    <h3 class="font-semibold mt-2">${p.name}</h3>
-                    <p class="text-pink-600 font-bold">${p.price}€</p>
-                    <p class="text-sm">${p.stone}</p>
-                    <button onclick="addToCart('${p.slug}')" class="w-full mt-2 bg-pink-300 text-white py-1 rounded">Ajouter</button>
-                    <a href="produit.php?slug=${p.slug}" class="block text-xs text-blue-600 mt-1">Voir</a>
+<div class="container mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Sidebar filtres -->
+        <aside class="lg:col-span-1">
+            <div class="filter-bar sticky top-24" data-aos="fade-right">
+                <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-filter mr-2 text-pink-600"></i>
+                    Filtres
+                </h3>
+                
+                <div class="filter-group">
+                    <label for="categoryFilter">
+                        <i class="fas fa-tag mr-1"></i>Catégorie
+                    </label>
+                    <select id="categoryFilter" onchange="applyFilters()">
+                        <option value="all">Toutes</option>
+                        <option value="bracelet">Bracelets</option>
+                        <option value="collier">Colliers</option>
+                        <option value="pierre">Pierres</option>
+                    </select>
                 </div>
-            `).join('');
-        }
 
-        document.getElementById('intention').onchange = renderProducts;
-    </script>
-</body>
-</html>
+                <div class="filter-group">
+                    <label for="intentionFilter">
+                        <i class="fas fa-heart mr-1"></i>Intention
+                    </label>
+                    <select id="intentionFilter" onchange="applyFilters()">
+                        <option value="all">Toutes</option>
+                        <option value="amour">Amour</option>
+                        <option value="protection">Protection</option>
+                        <option value="ancrage">Ancrage</option>
+                        <option value="abondance">Abondance</option>
+                        <option value="serenite">Sérénité</option>
+                        <option value="chance">Chance</option>
+                        <option value="intuition">Intuition</option>
+                        <option value="creativite">Créativité</option>
+                        <option value="guerison">Guérison</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="sortFilter">
+                        <i class="fas fa-sort mr-1"></i>Trier par
+                    </label>
+                    <select id="sortFilter" onchange="applyFilters()">
+                        <option value="featured">En vedette</option>
+                        <option value="name">Nom (A-Z)</option>
+                        <option value="price_asc">Prix croissant</option>
+                        <option value="price_desc">Prix décroissant</option>
+                    </select>
+                </div>
+
+                <button onclick="resetFilters()" class="btn btn-outline w-full mt-4">
+                    <i class="fas fa-redo mr-2"></i>Réinitialiser
+                </button>
+            </div>
+        </aside>
+
+        <!-- Grille produits -->
+        <div class="lg:col-span-3">
+            <div class="flex justify-between items-center mb-6" data-aos="fade-up">
+                <p id="resultsCount" class="text-gray-600">
+                    <i class="fas fa-box mr-1"></i>Chargement...
+                </p>
+                <div class="hidden md:flex gap-2">
+                    <button onclick="toggleView('grid')" id="gridViewBtn" class="p-2 border rounded hover:bg-gray-100 bg-pink-50">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button onclick="toggleView('list')" id="listViewBtn" class="p-2 border rounded hover:bg-gray-100">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <!-- Produits chargés dynamiquement -->
+                <div class="col-span-full flex justify-center py-12">
+                    <div class="loader"></div>
+                </div>
+            </div>
+
+            <!-- Pas de résultat -->
+            <div id="noResults" class="hidden text-center py-12">
+                <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
+                <h3 class="text-2xl font-bold text-gray-700 mb-2">Aucun produit trouvé</h3>
+                <p class="text-gray-600 mb-4">Essayez de modifier vos filtres</p>
+                <button onclick="resetFilters()" class="btn btn-primary">
+                    Voir tous les produits
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentView = 'grid';
+let currentFilters = {
+    category: 'all',
+    intention: 'all',
+    sort: 'featured'
+};
+
+// Charger les produits
+loadData().then(data => {
+    // Lire les paramètres URL
+    const urlParams = getURLParams();
+    
+    // Appliquer les filtres depuis l'URL
+    if (urlParams.category !== 'all') {
+        document.getElementById('categoryFilter').value = urlParams.category;
+    }
+    if (urlParams.intention !== 'all') {
+        document.getElementById('intentionFilter').value = urlParams.intention;
+    }
+    if (urlParams.stone) {
+        // Filtrer par pierre si spécifié
+        currentFilters.stone = urlParams.stone;
+    }
+    
+    applyFilters();
+});
+
+function applyFilters() {
+    currentFilters = {
+        category: document.getElementById('categoryFilter').value,
+        intention: document.getElementById('intentionFilter').value,
+        sort: document.getElementById('sortFilter').value
+    };
+
+    const filtered = filterProducts(currentFilters);
+    displayProducts(filtered, 'productsGrid');
+    
+    // Mettre à jour le compteur
+    const count = filtered.length;
+    document.getElementById('resultsCount').innerHTML = `
+        <i class="fas fa-box mr-1"></i>${count} produit${count > 1 ? 's' : ''} trouvé${count > 1 ? 's' : ''}
+    `;
+
+    // Afficher/masquer le message "pas de résultats"
+    document.getElementById('noResults').classList.toggle('hidden', count > 0);
+    document.getElementById('productsGrid').classList.toggle('hidden', count === 0);
+
+    // Mettre à jour l'URL
+    updateURL(currentFilters);
+}
+
+function resetFilters() {
+    document.getElementById('categoryFilter').value = 'all';
+    document.getElementById('intentionFilter').value = 'all';
+    document.getElementById('sortFilter').value = 'featured';
+    applyFilters();
+}
+
+function toggleView(view) {
+    currentView = view;
+    const grid = document.getElementById('productsGrid');
+    
+    if (view === 'list') {
+        grid.classList.remove('md:grid-cols-2', 'xl:grid-cols-3');
+        grid.classList.add('grid-cols-1');
+        document.getElementById('listViewBtn').classList.add('bg-pink-50');
+        document.getElementById('gridViewBtn').classList.remove('bg-pink-50');
+    } else {
+        grid.classList.add('md:grid-cols-2', 'xl:grid-cols-3');
+        grid.classList.remove('grid-cols-1');
+        document.getElementById('gridViewBtn').classList.add('bg-pink-50');
+        document.getElementById('listViewBtn').classList.remove('bg-pink-50');
+    }
+}
+</script>
+
+<?php include 'includes/footer.php'; ?>

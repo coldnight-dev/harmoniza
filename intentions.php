@@ -1,73 +1,210 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intentions - Harmon'Iza</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="manifest" href="manifest.json">
-</head>
-<body class="bg-gray-50">
-    <header class="bg-pink-100 p-4 text-center sticky top-0 z-50">
-        <a href="index.php" class="text-2xl font-playfair text-yellow-600">Harmon'Iza</a>
-    </header>
+<?php
+/**
+ * Harmon'Iza - Guide par intentions
+ */
+$pageTitle = "Guide par Intentions - Harmon'Iza";
+$pageDescription = "Trouvez les pierres et bijoux selon vos intentions";
+include 'includes/header.php';
+?>
 
-    <section class="p-4 max-w-2xl mx-auto">
-        <h1 class="text-3xl font-playfair text-yellow-600 text-center mb-6">Choisissez votre Intention</h1>
-        <select id="intention-select" class="w-full p-3 border rounded-lg text-lg mb-6">
-            <option value="">Sélectionnez une intention</option>
-            <option value="amour">💖 Amour & Relations</option>
-            <option value="protection">🛡️ Protection</option>
-            <option value="ancrage">🌍 Ancrage</option>
-            <option value="abondance">💰 Abondance</option>
-            <option value="serenite">🕊️ Sérénité</option>
-            <option value="chance">🍀 Chance</option>
-        </select>
+<div class="bg-gradient-to-r from-pink-50 to-purple-50 py-12">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl md:text-5xl font-bold text-center mb-4" style="font-family: 'Playfair Display', serif; color: var(--primary-dark);" data-aos="fade-up">
+            <i class="fas fa-heart mr-3"></i>Trouvez votre Intention
+        </h1>
+        <p class="text-center text-gray-600 text-lg max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+            Laissez-vous guider par vos besoins et découvrez les pierres et bijoux qui vous correspondent
+        </p>
+    </div>
+</div>
 
-        <div id="recommendations" class="space-y-4"></div>
-    </section>
+<div class="container mx-auto px-4 py-12">
+    <!-- Sélection d'intention -->
+    <div class="max-w-5xl mx-auto mb-12" data-aos="fade-up">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h2 class="text-2xl font-bold mb-6 text-center">Choisissez une intention</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="intentionCards">
+                <!-- Généré dynamiquement -->
+            </div>
+        </div>
+    </div>
 
-    <script src="js/main.js"></script>
-    <script src="js/cart.js"></script>
-    <script>
-        document.getElementById('intention-select').onchange = (e) => {
-            const intention = e.target.value;
-            if (!intention) return document.getElementById('recommendations').innerHTML = '';
+    <!-- Résultats -->
+    <div id="intentionResults" class="hidden">
+        <div class="text-center mb-8" data-aos="fade-up">
+            <h2 id="intentionTitle" class="text-3xl font-bold mb-3" style="color: var(--primary-dark);"></h2>
+            <p id="intentionDescription" class="text-gray-600 max-w-2xl mx-auto"></p>
+        </div>
 
-            Promise.all([
-                fetch('data/products.json'), 
-                fetch('data/stones.json')
-            ]).then(([p,r]) => Promise.all([p.json(), r.json()])).then(([products, stones]) => {
-                const recs = document.getElementById('recommendations');
-                const prod = products.filter(p => p.intention === intention);
-                const stn = stones.filter(s => s.associations.toLowerCase().includes(intention));
+        <!-- Pierres recommandées -->
+        <div class="mb-12" data-aos="fade-up">
+            <h3 class="text-2xl font-bold mb-6 flex items-center">
+                <i class="fas fa-gem text-purple-600 mr-3"></i>
+                Pierres recommandées
+            </h3>
+            <div id="recommendedStones" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+        </div>
 
-                recs.innerHTML = `
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <h2 class="text-xl font-bold text-yellow-600">Produits recommandés</h2>
-                        <div class="grid grid-cols-2 gap-2 mt-2">
-                            ${prod.slice(0,4).map(p => `
-                                <div onclick="addToCart('${p.slug}')" class="p-2 border rounded cursor-pointer">
-                                    <img src="${p.images[0]}" class="w-full h-20 object-cover rounded">
-                                    <p class="text-sm">${p.name} - ${p.price}€</p>
-                                </div>
-                            `).join('')}
-                        </div>
-                        ${prod.length > 4 ? `<button onclick="addAllToCart(${JSON.stringify(prod.map(p=>p.slug))})" class="w-full bg-pink-300 text-white py-2 mt-2 rounded">Ajouter tous (${prod.length})</button>` : ''}
-                    </div>
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <h2 class="text-xl font-bold text-yellow-600">Pierres recommandées</h2>
-                        <div class="grid grid-cols-2 gap-2 mt-2">
-                            ${stn.slice(0,4).map(s => `<div class="p-2"><img src="${s.image}" class="w-full h-20 object-cover rounded"><p class="text-sm">${s.name}</p></div>`).join('')}
-                        </div>
-                    </div>
-                `;
-            });
-        };
-    </script>
-</body>
-</html>
+        <!-- Produits associés -->
+        <div data-aos="fade-up">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold flex items-center">
+                    <i class="fas fa-shopping-bag text-pink-600 mr-3"></i>
+                    Produits associés
+                </h3>
+                <button onclick="addAllToCart()" class="btn btn-secondary">
+                    <i class="fas fa-cart-plus mr-2"></i>
+                    Tout ajouter au panier
+                </button>
+            </div>
+            <div id="recommendedProducts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+const intentionData = {
+    'amour': {
+        title: 'Amour & Relations',
+        description: 'Ouvrez votre cœur, cultivez l\'amour de soi et attirez des relations harmonieuses',
+        icon: 'heart',
+        color: 'pink'
+    },
+    'protection': {
+        title: 'Protection Énergétique',
+        description: 'Créez un bouclier contre les énergies négatives et restez ancré',
+        icon: 'shield-alt',
+        color: 'purple'
+    },
+    'ancrage': {
+        title: 'Ancrage & Stabilité',
+        description: 'Connectez-vous à la terre et trouvez votre équilibre intérieur',
+        icon: 'tree',
+        color: 'green'
+    },
+    'abondance': {
+        title: 'Abondance & Prospérité',
+        description: 'Attirez l\'abondance sous toutes ses formes et manifestez vos objectifs',
+        icon: 'coins',
+        color: 'yellow'
+    },
+    'serenite': {
+        title: 'Sérénité & Paix',
+        description: 'Apaisez votre mental et trouvez la paix intérieure',
+        icon: 'spa',
+        color: 'blue'
+    },
+    'chance': {
+        title: 'Chance & Opportunités',
+        description: 'Ouvrez-vous aux opportunités et attirez la chance',
+        icon: 'clover',
+        color: 'emerald'
+    },
+    'intuition': {
+        title: 'Intuition & Sagesse',
+        description: 'Développez votre sixième sens et accédez à votre sagesse intérieure',
+        icon: 'eye',
+        color: 'indigo'
+    },
+    'creativite': {
+        title: 'Créativité & Expression',
+        description: 'Libérez votre créativité et exprimez votre authenticité',
+        icon: 'palette',
+        color: 'orange'
+    }
+};
+
+let currentIntentionData = {};
+
+loadData().then(data => {
+    createIntentionCards();
+    
+    // Lire l'intention depuis l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const intention = urlParams.get('intention');
+    if (intention && intentionData[intention]) {
+        showIntentionResults(intention);
+    }
+});
+
+function createIntentionCards() {
+    const container = document.getElementById('intentionCards');
+    
+    const colorMap = {
+        'pink': 'bg-pink-50 hover:bg-pink-100 border-pink-200 text-pink-600',
+        'purple': 'bg-purple-50 hover:bg-purple-100 border-purple-200 text-purple-600',
+        'green': 'bg-green-50 hover:bg-green-100 border-green-200 text-green-600',
+        'yellow': 'bg-yellow-50 hover:bg-yellow-100 border-yellow-200 text-yellow-600',
+        'blue': 'bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-600',
+        'emerald': 'bg-emerald-50 hover:bg-emerald-100 border-emerald-200 text-emerald-600',
+        'indigo': 'bg-indigo-50 hover:bg-indigo-100 border-indigo-200 text-indigo-600',
+        'orange': 'bg-orange-50 hover:bg-orange-100 border-orange-200 text-orange-600'
+    };
+    
+    Object.entries(intentionData).forEach(([slug, data]) => {
+        const colors = colorMap[data.color] || colorMap['pink'];
+        container.innerHTML += `
+            <button onclick="showIntentionResults('${slug}')" 
+                class="intention-card flex flex-col items-center p-6 rounded-xl hover:shadow-lg transition ${colors} border-2">
+                <i class="fas fa-${data.icon} text-4xl mb-3"></i>
+                <span class="font-semibold text-center">${data.title.split(' & ')[0]}</span>
+            </button>
+        `;
+    });
+}
+
+function showIntentionResults(intention) {
+    if (!intentionData[intention]) return;
+
+    const info = intentionData[intention];
+    currentIntentionData = { intention, ...info };
+
+    // Mettre à jour le titre et description
+    document.getElementById('intentionTitle').innerHTML = `
+        <i class="fas fa-${info.icon} mr-3 text-${info.color}-600"></i>
+        ${info.title}
+    `;
+    document.getElementById('intentionDescription').textContent = info.description;
+
+    // Afficher les résultats
+    document.getElementById('intentionResults').classList.remove('hidden');
+
+    // Charger les données
+    loadData().then(data => {
+        const stones = data.stones.filter(s => s.intentions.includes(intention));
+        const products = data.products.filter(p => p.intentions.includes(intention));
+
+        displayStones(stones, 'recommendedStones');
+        displayProducts(products, 'recommendedProducts');
+
+        // Scroll vers les résultats
+        document.getElementById('intentionResults').scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+        });
+    });
+
+    // Mettre à jour l'URL
+    const url = new URL(window.location);
+    url.searchParams.set('intention', intention);
+    window.history.pushState({}, '', url);
+}
+
+function addAllToCart() {
+    if (!currentIntentionData.intention) return;
+
+    loadData().then(data => {
+        const products = data.products.filter(p => 
+            p.intentions.includes(currentIntentionData.intention)
+        );
+
+        products.forEach(product => {
+            Cart.add(product, 1);
+        });
+
+        alert(`${products.length} produits ajoutés au panier !`);
+    });
+}
+</script>
+
+<?php include 'includes/footer.php'; ?>

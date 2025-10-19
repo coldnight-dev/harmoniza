@@ -1,18 +1,226 @@
 [
-  {"slug":"bracelet-amour","name":"Bracelet Amour","price":15.00,"images":["https://source.unsplash.com/random/300x300/?rose-quartz"],"stone":"Quartz Rose","intention":"amour","description":"Favorise l'amour et la compassion."},
-  {"slug":"collier-protection","name":"Collier Protection","price":20.00,"images":["https://source.unsplash.com/random/300x300/?amethyst"],"stone":"Améthyste","intention":"protection","description":"Protège contre les énergies négatives."},
-  {"slug":"pierre-ancrage","name":"Pierre Ancrage","price":10.00,"images":["https://source.unsplash.com/random/300x300/?hematite"],"stone":"Hématite","intention":"ancrage","description":"Ancre les énergies à la terre."},
-  {"slug":"bracelet-abondance","name":"Bracelet Abondance","price":18.00,"images":["https://source.unsplash.com/random/300x300/?citrine"],"stone":"Citrine","intention":"abondance","description":"Attire la prospérité."},
-  {"slug":"collier-serenite","name":"Collier Sérénité","price":22.00,"images":["https://source.unsplash.com/random/300x300/?aigue-marine"],"stone":"Aigue-Marine","intention":"sérénité","description":"Apporte calme et paix."},
-  {"slug":"bracelet-chance","name":"Bracelet Chance","price":12.00,"images":["https://source.unsplash.com/random/300x300/?aventurine"],"stone":"Aventurine","intention":"chance","description":"Porte-bonheur."},
-  {"slug":"collier-guerison","name":"Collier Guérison","price":25.00,"images":["https://source.unsplash.com/random/300x300/?jade"],"stone":"Jade","intention":"guérison","description":"Favorise la guérison physique."},
-  {"slug":"pierre-intuition","name":"Pierre Intuition","price":8.00,"images":["https://source.unsplash.com/random/300x300/?labradorite"],"stone":"Labradorite","intention":"intuition","description":"Améliore l'intuition."},
-  {"slug":"bracelet-protection","name":"Bracelet Protection","price":16.00,"images":["https://source.unsplash.com/random/300x300/?tourmaline"],"stone":"Tourmaline Noire","intention":"protection","description":"Bouclier énergétique."},
-  {"slug":"collier-amour","name":"Collier Amour","price":19.00,"images":["https://source.unsplash.com/random/300x300/?rhodonite"],"stone":"Rhodonite","intention":"amour","description":"Guérit les blessures émotionnelles."},
-  {"slug":"bracelet-ancrage","name":"Bracelet Ancrage","price":14.00,"images":["https://source.unsplash.com/random/300x300/?obsidienne"],"stone":"Obsidienne","intention":"ancrage","description":"Protection et ancrage."},
-  {"slug":"collier-abondance","name":"Collier Abondance","price":21.00,"images":["https://source.unsplash.com/random/300x300/?pyrite"],"stone":"Pyrite","intention":"abondance","description":"Attire la richesse."},
-  {"slug":"bracelet-serenite","name":"Bracelet Sérénité","price":17.00,"images":["https://source.unsplash.com/random/300x300/?lapis-lazuli"],"stone":"Lapis-Lazuli","intention":"sérénité","description":"Favorise la sagesse."},
-  {"slug":"collier-chance","name":"Collier Chance","price":13.00,"images":["https://source.unsplash.com/random/300x300/?amazonite"],"stone":"Amazonite","intention":"chance","description":"Équilibre émotionnel."},
-  {"slug":"bracelet-guerison","name":"Bracelet Guérison","price":23.00,"images":["https://source.unsplash.com/random/300x300/?malachite"],"stone":"Malachite","intention":"guérison","description":"Transformation et guérison."},
-  {"slug":"collier-intuition","name":"Collier Intuition","price":11.00,"images":["https://source.unsplash.com/random/300x300/?sodalite"],"stone":"Sodalite","intention":"intuition","description":"Clarté mentale."}
+  {
+    "slug": "bracelet-chance-abondance",
+    "name": "Bracelet Chance & Abondance",
+    "category": "bracelet",
+    "price": 10.00,
+    "images": [
+      "https://via.placeholder.com/600x600/f8e5d0/d4af37?text=Bracelet+Chance"
+    ],
+    "stones": ["citrine", "oeil-de-tigre", "pyrite"],
+    "intentions": ["abondance", "chance", "protection"],
+    "description": "Bracelet composé de citrine dorée, œil de tigre et pyrite, associant les énergies d'abondance et de protection.",
+    "virtues": "La citrine attire la prospérité et stimule la confiance en soi. L'œil de tigre apporte courage et ancrage. La pyrite renforce la volonté et attire l'abondance matérielle.",
+    "featured": true
+  },
+  {
+    "slug": "bracelet-amour-quartz-rose",
+    "name": "Bracelet Amour - Quartz Rose",
+    "category": "bracelet",
+    "price": 12.00,
+    "images": [
+      "https://via.placeholder.com/600x600/ffc0cb/ff69b4?text=Bracelet+Amour"
+    ],
+    "stones": ["quartz-rose", "rhodonite"],
+    "intentions": ["amour", "paix", "sérénité"],
+    "description": "Bracelet en quartz rose tendre et rhodonite, pour ouvrir le cœur et cultiver l'amour inconditionnel.",
+    "virtues": "Le quartz rose favorise l'amour de soi et des autres, apaise les blessures émotionnelles. La rhodonite équilibre les émotions et encourage le pardon.",
+    "featured": true
+  },
+  {
+    "slug": "bracelet-protection-onyx",
+    "name": "Bracelet Protection - Onyx Noir",
+    "category": "bracelet",
+    "price": 11.00,
+    "images": [
+      "https://via.placeholder.com/600x600/2c2c2c/ffffff?text=Bracelet+Protection"
+    ],
+    "stones": ["onyx", "obsidienne", "tourmaline-noire"],
+    "intentions": ["protection", "ancrage", "force"],
+    "description": "Bracelet puissant composé d'onyx noir, obsidienne et tourmaline noire pour une protection énergétique optimale.",
+    "virtues": "L'onyx absorbe les énergies négatives et renforce la détermination. L'obsidienne protège et révèle les vérités cachées. La tourmaline noire repousse les influences néfastes.",
+    "featured": true
+  },
+  {
+    "slug": "bracelet-serenite-amethyste",
+    "name": "Bracelet Sérénité - Améthyste",
+    "category": "bracelet",
+    "price": 13.00,
+    "images": [
+      "https://via.placeholder.com/600x600/9370db/8a2be2?text=Bracelet+Serenite"
+    ],
+    "stones": ["amethyste", "lepidolite"],
+    "intentions": ["sérénité", "intuition", "sommeil"],
+    "description": "Bracelet apaisant en améthyste violette et lépidolite, idéal pour favoriser la détente et l'intuition.",
+    "virtues": "L'améthyste calme le mental, favorise la méditation et améliore le sommeil. La lépidolite dissipe le stress et équilibre les émotions.",
+    "featured": false
+  },
+  {
+    "slug": "bracelet-ancrage-jaspe-rouge",
+    "name": "Bracelet Ancrage - Jaspe Rouge",
+    "category": "bracelet",
+    "price": 10.00,
+    "images": [
+      "https://via.placeholder.com/600x600/cd5c5c/8b0000?text=Bracelet+Ancrage"
+    ],
+    "stones": ["jaspe-rouge", "hematite"],
+    "intentions": ["ancrage", "vitalité", "force"],
+    "description": "Bracelet en jaspe rouge et hématite pour un ancrage puissant et un regain d'énergie vitale.",
+    "virtues": "Le jaspe rouge stimule l'énergie physique et ancre profondément. L'hématite renforce la connexion à la terre et améliore la concentration.",
+    "featured": false
+  },
+  {
+    "slug": "collier-harmonie-7-chakras",
+    "name": "Collier Harmonie - 7 Chakras",
+    "category": "collier",
+    "price": 18.00,
+    "images": [
+      "https://via.placeholder.com/600x600/ffd700/ff8c00?text=Collier+7+Chakras"
+    ],
+    "stones": ["jaspe-rouge", "cornaline", "citrine", "aventurine", "sodalite", "amethyste", "quartz"],
+    "intentions": ["équilibre", "harmonie", "énergie"],
+    "description": "Collier composé de 7 pierres représentant les 7 chakras principaux, pour un alignement énergétique complet.",
+    "virtues": "Chaque pierre correspond à un chakra et contribue à l'harmonisation globale du corps énergétique, favorisant bien-être et vitalité.",
+    "featured": true
+  },
+  {
+    "slug": "collier-lune-labradorite",
+    "name": "Collier Lune - Labradorite",
+    "category": "collier",
+    "price": 22.00,
+    "images": [
+      "https://via.placeholder.com/600x600/4682b4/1e90ff?text=Collier+Labradorite"
+    ],
+    "stones": ["labradorite", "pierre-de-lune"],
+    "intentions": ["intuition", "protection", "féminité"],
+    "description": "Collier élégant en labradorite aux reflets mystiques et pierre de lune, célébrant l'énergie lunaire.",
+    "virtues": "La labradorite protège l'aura et développe l'intuition. La pierre de lune équilibre les émotions et favorise la réceptivité.",
+    "featured": true
+  },
+  {
+    "slug": "collier-soleil-ambre",
+    "name": "Collier Soleil - Ambre",
+    "category": "collier",
+    "price": 25.00,
+    "images": [
+      "https://via.placeholder.com/600x600/ffbf00/ff8c00?text=Collier+Ambre"
+    ],
+    "stones": ["ambre", "citrine"],
+    "intentions": ["joie", "vitalité", "guérison"],
+    "description": "Collier chaleureux en ambre doré et citrine, portant l'énergie solaire et la chaleur du cœur.",
+    "virtues": "L'ambre purifie et revitalise, soulage les tensions. La citrine apporte joie et optimisme.",
+    "featured": false
+  },
+  {
+    "slug": "pierre-amethyste-geode",
+    "name": "Géode d'Améthyste",
+    "category": "pierre",
+    "price": 35.00,
+    "images": [
+      "https://via.placeholder.com/600x600/9370db/4b0082?text=Geode+Amethyste"
+    ],
+    "stones": ["amethyste"],
+    "intentions": ["sérénité", "purification", "méditation"],
+    "description": "Magnifique géode d'améthyste naturelle, pièce unique pour purifier et harmoniser l'espace.",
+    "virtues": "Puissante pierre de purification et d'élévation spirituelle. Idéale pour la méditation et créer un espace sacré.",
+    "featured": true
+  },
+  {
+    "slug": "pierre-quartz-rose-brut",
+    "name": "Quartz Rose Brut",
+    "category": "pierre",
+    "price": 8.00,
+    "images": [
+      "https://via.placeholder.com/600x600/ffc0cb/ff1493?text=Quartz+Rose"
+    ],
+    "stones": ["quartz-rose"],
+    "intentions": ["amour", "douceur", "tendresse"],
+    "description": "Pierre de quartz rose brute, pierre de l'amour universel et de la tendresse.",
+    "virtues": "Favorise l'amour de soi, apaise le cœur, guérit les blessures émotionnelles.",
+    "featured": false
+  },
+  {
+    "slug": "pierre-obsidienne-oeil-celeste",
+    "name": "Obsidienne Œil Céleste",
+    "category": "pierre",
+    "price": 12.00,
+    "images": [
+      "https://via.placeholder.com/600x600/000000/87ceeb?text=Obsidienne"
+    ],
+    "stones": ["obsidienne"],
+    "intentions": ["protection", "vérité", "introspection"],
+    "description": "Pierre d'obsidienne œil céleste, miroir de l'âme et bouclier énergétique puissant.",
+    "virtues": "Protection intense, révèle les vérités cachées, aide à l'introspection profonde.",
+    "featured": false
+  },
+  {
+    "slug": "pierre-selenite-baton",
+    "name": "Bâton de Sélénite",
+    "category": "pierre",
+    "price": 15.00,
+    "images": [
+      "https://via.placeholder.com/600x600/f0f8ff/ffffff?text=Selenite"
+    ],
+    "stones": ["selenite"],
+    "intentions": ["purification", "clarté", "paix"],
+    "description": "Bâton de sélénite blanche, idéal pour purifier et recharger les autres pierres.",
+    "virtues": "Purification énergétique puissante, apporte clarté mentale et paix intérieure. Ne nécessite pas de purification.",
+    "featured": true
+  },
+  {
+    "slug": "bracelet-creativite-cornaline",
+    "name": "Bracelet Créativité - Cornaline",
+    "category": "bracelet",
+    "price": 11.00,
+    "images": [
+      "https://via.placeholder.com/600x600/ff7f50/ff4500?text=Bracelet+Creativite"
+    ],
+    "stones": ["cornaline", "oeil-de-tigre"],
+    "intentions": ["créativité", "confiance", "motivation"],
+    "description": "Bracelet en cornaline orangée et œil de tigre, stimulant la créativité et la confiance en soi.",
+    "virtues": "La cornaline stimule la créativité, la motivation et la vitalité. Elle encourage l'action et la prise de décision.",
+    "featured": false
+  },
+  {
+    "slug": "bracelet-communication-sodalite",
+    "name": "Bracelet Communication - Sodalite",
+    "category": "bracelet",
+    "price": 12.00,
+    "images": [
+      "https://via.placeholder.com/600x600/4169e1/000080?text=Bracelet+Communication"
+    ],
+    "stones": ["sodalite", "lapis-lazuli"],
+    "intentions": ["communication", "vérité", "expression"],
+    "description": "Bracelet en sodalite bleue et lapis-lazuli, favorisant l'expression authentique et la communication.",
+    "virtues": "La sodalite facilite la communication et l'expression de la vérité. Le lapis-lazuli ouvre la conscience spirituelle.",
+    "featured": false
+  },
+  {
+    "slug": "collier-guerison-aventurine",
+    "name": "Collier Guérison - Aventurine Verte",
+    "category": "collier",
+    "price": 16.00,
+    "images": [
+      "https://via.placeholder.com/600x600/50c878/228b22?text=Collier+Guerison"
+    ],
+    "stones": ["aventurine", "jade"],
+    "intentions": ["guérison", "prospérité", "santé"],
+    "description": "Collier en aventurine verte et jade, pierres de guérison et de prospérité douce.",
+    "virtues": "L'aventurine favorise la guérison émotionnelle et physique, attire la chance. Le jade apporte harmonie et longévité.",
+    "featured": false
+  },
+  {
+    "slug": "pierre-pyrite-cluster",
+    "name": "Cluster de Pyrite",
+    "category": "pierre",
+    "price": 28.00,
+    "images": [
+      "https://via.placeholder.com/600x600/b8860b/ffd700?text=Pyrite"
+    ],
+    "stones": ["pyrite"],
+    "intentions": ["abondance", "protection", "volonté"],
+    "description": "Magnifique cluster de pyrite dorée, pierre d'abondance et de manifestation.",
+    "virtues": "Attire l'abondance matérielle, renforce la volonté, protège contre les énergies négatives. Stimule l'intellect.",
+    "featured": true
+  }
 ]

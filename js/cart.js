@@ -1,98 +1,137 @@
-const CART_KEY = 'harmoniza-cart';
+/**
+ * Harmon'Iza - Gestion du panier (localStorage)
+ */
 
-function getCart() {
-    return JSON.parse(localStorage.getItem(CART_KEY)) || [];
-}
+const Cart = {
+  STORAGE_KEY: 'harmoniza_cart',
 
-function addToCart(slug, qty = 1) {
-    let cart = getCart();
-    const item = cart.find(i => i.slug === slug);
-    if (item) item.qty += qty;
-    else cart.push({ slug, qty });
-    localStorage.setItem(CART_KEY, JSON.stringify(cart));
-    updateCartCount();
-    updateCartDisplay();
-    alert('Ajouté au panier !');
-}
+  // Récupérer le panier
+  get() {
+    try {
+      const data = localStorage.getItem(this.STORAGE_KEY);
+      return data ? JSON.parse(data) : [];
+    } catch (e) {
+      console.error('Erreur lecture panier:', e);
+      return [];
+    }
+  },
 
-function addAllToCart(slugs) {
-    slugs.forEach(slug => addToCart(slug));
-}
+  // Sauvegarder le panier
+  save(items) {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(items));
+      this.updateBadge();
+    } catch (e) {
+      console.error('Erreur sauvegarde panier:', e);
+    }
+  },
 
-function updateCartCount() {
-    const count = getCart().reduce((sum, i) => sum + i.qty, 0);
-    document.querySelectorAll('#cart-count').forEach(el => el.textContent = count);
-}
+  // Ajouter un article
+  add(product, qty = 1) {
+    const items = this.get();
+    const existing = items.find(item => item.slug === product.slug);
 
-function updateCartDisplay() {
-    const cart = getCart();
-    const items = document.getElementById('cart-items');
-    const totalEl = document.getElementById('total');
-    
-    if (cart.length === 0) {
-        items.innerHTML = '<p class="text-center text-gray-500">Panier vide</p>';
-        totalEl.textContent = 'Total: 0€';
-        return;
+    if (existing) {
+      existing.qty += qty;
+    } else {
+      items.push({
+        slug: product.slug,
+        name: product.name,
+        price: product.price || 0,
+        image: product.images[0],
+        qty: qty
+      });
     }
 
-    fetch('data/products.json').then(r=>r.json()).then(products => {
-        items.innerHTML = cart.map(item => {
-            const p = products.find(pr => pr.slug === item.slug);
-            return p ? `
-                <div class="flex justify-between items-center py-2 border-b">
-                    <span>${p.name}</span>
-                    <div class="text-right">
-                        <span>${item.qty} × ${p.price}€</span><br>
-                        <small>${(item.qty * p.price).toFixed(2)}€</small>
-                    </div>
-                </div>
-            ` : '';
-        }).join('');
-        
-        const total = cart.reduce((sum, item) => {
-            const p = products.find(pr => pr.slug === item.slug);
-            return sum + (p ? p.price * item.qty : 0);
-        }, 0);
-        totalEl.textContent = `Total: ${total.toFixed(2)}€`;
-    });
-}
+    this.save(items);
+    this.showNotification(`${product.name} ajouté au panier`);
+  },
 
-function submitOrder() {
-    const cart = getCart();
-    if (cart.length === 0) return alert('Panier vide');
+  // Mettre à jour la quantité
+  updateQty(slug, qty) {
+    const items = this.get();
+    const item = items.find(i => i.slug === slug);
 
-    const name = document.getElementById('name').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const notes = document.getElementById('notes').value;
+    if (item) {
+      if (qty <= 0) {
+        this.remove(slug);
+      } else {
+        item.qty = qty;
+        this.save(items);
+      }
+    }
+  },
 
-    if (!name) return alert('Nom requis');
-    if (phone.length < 7 || phone.length > 15) return alert('Téléphone invalide');
+  // Supprimer un article
+  remove(slug) {
+    const items = this.get();
+    const filtered = items.filter(item => item.slug !== slug);
+    this.save(filtered);
+  },
 
-    const payload = { 
-        buyer: { name, phone, notes }, 
-        items: cart, 
-        client_total: parseFloat(document.getElementById('total').textContent.replace('Total: ', '')) 
+  // Vider le panier
+  clear() {
+    localStorage.removeItem(this.STORAGE_KEY);
+    this.updateBadge();
+  },
+
+  // Calculer le total
+  getTotal() {
+    const items = this.get();
+    return items.reduce((sum, item) => sum + (item.price * item.qty), 0);
+  },
+
+  // Compter les articles
+  count() {
+    const items = this.get();
+    return items.reduce((sum, item) => sum + item.qty, 0);
+  },
+
+  // Mettre à jour le badge
+  updateBadge() {
+    const badge = document.querySelector('.cart-badge');
+    if (badge) {
+      const count = this.count();
+      badge.textContent = count;
+      badge.style.display = count > 0 ? 'flex' : 'none';
+    }
+  },
+
+  // Notification
+  showNotification(message) {
+    // Créer notification toast
+    const toast = document.createElement('div');
+    toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slide-up';
+    toast.innerHTML = `
+      <div class="flex items-center gap-2">
+        <i class="fas fa-check-circle"></i>
+        <span>${message}</span>
+      </div>
+    `;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(20px)';
+      setTimeout(() => toast.remove(), 300);
+    }, 2000);
+  },
+
+  // Préparer le payload pour l'API
+  prepareOrder(buyer) {
+    const items = this.get();
+    return {
+      buyer: buyer,
+      items: items.map(item => ({
+        slug: item.slug,
+        qty: item.qty
+      })),
+      client_total: this.getTotal()
     };
+  }
+};
 
-    if (!navigator.onLine) return alert('Vous êtes hors-ligne — réessayez en ligne');
-
-    fetch('/api/commande/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    })
-    .then(r => r.json())
-    .then(data => {
-        if (data.ok) {
-            localStorage.removeItem(CART_KEY);
-            alert(`✅ Commande enregistrée !\nID: ${data.order_id}`);
-            window.location.href = 'index.php';
-        } else {
-            alert(`❌ ${data.error}`);
-        }
-    })
-    .catch(() => alert('Vous êtes hors-ligne — réessayez en ligne'));
-}
-
-// Charger au démarrage
-if (document.getElementById('cart-items')) updateCartDisplay();
+// Initialiser au chargement
+document.addEventListener('DOMContentLoaded', () => {
+  Cart.updateBadge();
+});

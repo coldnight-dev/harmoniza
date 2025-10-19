@@ -1,39 +1,49 @@
+# Harmon'Iza - Configuration Apache (VERSION SIMPLE)
+
+# Forcer HTTPS
 RewriteEngine On
-RewriteBase /harmoniza/
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# Rediriger /ventes/[nombre]/ vers /ventes/index.php
-RewriteRule ^ventes/(\d+)/?$ ventes/index.php [L,QSA]
+# Bloquer UNIQUEMENT le dossier commandes
+#<Directory "*/admin/commandes">
+#    Require all denied
+#</Directory>
 
-# Empêcher l'accès direct aux fichiers produit.php
-RewriteRule ^ventes/\d+/produit\.php$ - [F,L]
-
+# Headers de sécurité
 <IfModule mod_headers.c>
-    <FilesMatch "service-worker\.js$">
-        Header set Service-Worker-Allowed "/harmoniza/"
-        Header set Cache-Control "no-cache, no-store, must-revalidate"
-    </FilesMatch>
-    
-    <FilesMatch "manifest\.json$">
-        Header set Content-Type "application/manifest+json"
-        Header set Cache-Control "max-age=3600"
-    </FilesMatch>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
 </IfModule>
 
+# Type MIME pour manifest.json
+<FilesMatch "manifest\.json$">
+    <IfModule mod_headers.c>
+        Header set Content-Type "application/manifest+json"
+    </IfModule>
+</FilesMatch>
+
+# Cache
 <IfModule mod_expires.c>
     ExpiresActive On
     ExpiresByType image/jpeg "access plus 1 month"
     ExpiresByType image/png "access plus 1 month"
-    ExpiresByType image/gif "access plus 1 month"
-    ExpiresByType image/svg+xml "access plus 1 month"
-    ExpiresByType image/webp "access plus 1 month"
     ExpiresByType text/css "access plus 1 week"
     ExpiresByType application/javascript "access plus 1 week"
-    ExpiresByType font/woff2 "access plus 1 year"
-    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType application/json "access plus 1 day"
 </IfModule>
 
+# Compression
 <IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+    AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json
 </IfModule>
 
-ErrorDocument 404 /harmoniza/404.php
+# Erreurs
+ErrorDocument 404 /harmoniza/404.html
+
+# Index
+DirectoryIndex index.php index.html
+
+# Pas de listing
+Options -Indexes

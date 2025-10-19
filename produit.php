@@ -1,55 +1,214 @@
-<?php $slug = $_GET['slug'] ?? ''; ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produit - Harmon'Iza</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="manifest" href="manifest.json">
-</head>
-<body class="bg-gray-50">
-    <header class="bg-pink-100 p-4">
-        <a href="index.php" class="text-xl font-playfair text-yellow-600">Harmon'Iza</a>
-        <a href="commande.php" class="float-right bg-pink-300 px-4 py-2 rounded">🛒 <span id="cart-count">0</span></a>
-    </header>
+<?php
+/**
+ * Harmon'Iza - Fiche produit
+ */
+$pageTitle = "Produit - Harmon'Iza";
+$pageDescription = "Découvrez nos bijoux et pierres énergétiques";
+include 'includes/header.php';
+?>
 
-    <section class="p-4 max-w-4xl mx-auto">
-        <div id="product-detail" class="bg-white rounded-lg shadow p-6"></div>
-    </section>
+<div class="container mx-auto px-4 py-8">
+    <div id="productDetail">
+        <!-- Chargement -->
+        <div class="flex justify-center py-20">
+            <div class="loader"></div>
+        </div>
+    </div>
+</div>
 
-    <script src="js/main.js"></script>
-    <script src="js/cart.js"></script>
-    <script>
-        fetch(`data/products.json`)
-            .then(r=>r.json())
-            .then(products => {
-                const product = products.find(p => p.slug === '<?php echo $slug; ?>');
-                if (product) {
-                    document.getElementById('product-detail').innerHTML = `
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                ${product.images.map(img => `<img src="${img}" loading="lazy" class="w-full rounded">`).join('')}
-                            </div>
-                            <div>
-                                <h1 class="text-3xl font-playfair text-yellow-600">${product.name}</h1>
-                                <p class="text-2xl text-pink-600 font-bold mt-2">${product.price}€</p>
-                                <p class="text-gray-600 mt-2">Pierre: ${product.stone}</p>
-                                <p class="text-gray-600">Intention: ${product.intention}</p>
-                                <p class="mt-4">${product.description}</p>
-                                <button onclick="addToCart('${product.slug}')" class="w-full bg-pink-300 text-white py-3 mt-4 rounded-lg font-bold">Ajouter à la commande</button>
-                                <a href="pierres.php?stone=${product.stone.toLowerCase().replace(' ', '-')}" class="block text-blue-600 mt-2">📖 Fiche pierre complète</a>
-                                <button onclick="shareProduct('${product.name}', window.location.href)" class="w-full bg-yellow-300 text-gray-800 py-2 mt-2 rounded">Partager</button>
-                            </div>
+<script>
+const slug = new URLSearchParams(window.location.search).get('slug');
+
+if (!slug) {
+    window.location.href = '/harmoniza/boutique.php';
+}
+
+loadData().then(data => {
+    const product = data.products.find(p => p.slug === slug);
+    
+    if (!product) {
+        document.getElementById('productDetail').innerHTML = `
+            <div class="text-center py-20">
+                <i class="fas fa-exclamation-triangle text-6xl text-yellow-500 mb-4"></i>
+                <h2 class="text-3xl font-bold mb-4">Produit introuvable</h2>
+                <a href="/harmoniza/boutique.php" class="btn btn-primary">Retour à la boutique</a>
+            </div>
+        `;
+        return;
+    }
+
+    // Mettre à jour le titre de la page
+    document.title = product.name + ' - Harmon\'Iza';
+
+    // Afficher le produit
+    displayProductDetail(product, data.stones);
+});
+
+function displayProductDetail(product, stones) {
+    const container = document.getElementById('productDetail');
+    
+    const priceHTML = product.price 
+        ? `<div class="text-4xl font-bold text-yellow-600 mb-4">${product.price.toFixed(2)} €</div>`
+        : '<div class="text-lg text-gray-600 mb-4">Prix sur demande</div>';
+
+    const stonesList = product.stones.map(stoneSlug => {
+        const stone = stones.find(s => s.slug === stoneSlug);
+        return stone ? `
+            <button onclick="showStoneDetail('${stone.slug}')" 
+                class="inline-flex items-center gap-2 bg-purple-100 text-purple-800 px-4 py-2 rounded-full hover:bg-purple-200 transition">
+                <i class="fas fa-gem"></i>
+                <span>${stone.name}</span>
+            </button>
+        ` : '';
+    }).join('');
+
+    const intentionsList = product.intentions.map(int => 
+        `<span class="tag">${int}</span>`
+    ).join('');
+
+    container.innerHTML = `
+        <!-- Breadcrumb -->
+        <nav class="mb-6 text-sm text-gray-600" data-aos="fade-up">
+            <a href="/harmoniza/" class="hover:text-pink-600">Accueil</a>
+            <i class="fas fa-chevron-right mx-2 text-xs"></i>
+            <a href="/harmoniza/boutique.php" class="hover:text-pink-600">Boutique</a>
+            <i class="fas fa-chevron-right mx-2 text-xs"></i>
+            <span class="text-gray-900">${product.name}</span>
+        </nav>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Galerie images -->
+            <div data-aos="fade-right">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-4">
+                    <img id="mainImage" src="${product.images[0]}" alt="${product.name}" 
+                        class="w-full h-96 object-cover">
+                </div>
+                ${product.images.length > 1 ? `
+                    <div class="flex gap-4">
+                        ${product.images.map((img, idx) => `
+                            <button onclick="changeImage('${img}')" 
+                                class="w-20 h-20 rounded-lg overflow-hidden border-2 border-transparent hover:border-pink-500 transition">
+                                <img src="${img}" alt="Image ${idx + 1}" class="w-full h-full object-cover">
+                            </button>
+                        `).join('')}
+                    </div>
+                ` : ''}
+            </div>
+
+            <!-- Informations produit -->
+            <div data-aos="fade-left">
+                <h1 class="text-4xl font-bold mb-4" style="font-family: 'Playfair Display', serif; color: var(--primary-dark);">
+                    ${product.name}
+                </h1>
+
+                ${priceHTML}
+
+                <div class="flex gap-2 mb-6">
+                    ${intentionsList}
+                </div>
+
+                <div class="bg-pink-50 rounded-xl p-6 mb-6">
+                    <h3 class="font-bold text-lg mb-3 flex items-center">
+                        <i class="fas fa-info-circle text-pink-600 mr-2"></i>
+                        Description
+                    </h3>
+                    <p class="text-gray-700 leading-relaxed">${product.description}</p>
+                </div>
+
+                <div class="bg-purple-50 rounded-xl p-6 mb-6">
+                    <h3 class="font-bold text-lg mb-3 flex items-center">
+                        <i class="fas fa-spa text-purple-600 mr-2"></i>
+                        Vertus énergétiques
+                    </h3>
+                    <p class="text-gray-700 leading-relaxed">${product.virtues}</p>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="font-bold text-lg mb-3 flex items-center">
+                        <i class="fas fa-gem text-purple-600 mr-2"></i>
+                        Pierres utilisées
+                    </h3>
+                    <div class="flex flex-wrap gap-3">
+                        ${stonesList}
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
+                    <div class="flex items-start">
+                        <i class="fas fa-exclamation-triangle text-amber-600 mt-1 mr-3"></i>
+                        <div class="text-sm text-gray-700">
+                            <strong>Note:</strong> Stock non géré. Disponibilité confirmée après commande.
                         </div>
-                    `;
-                }
-                updateCartCount();
-            });
-    </script>
-</body>
-</html>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex gap-4 mb-6">
+                    <button onclick="addToCart()" class="btn btn-primary flex-1 text-lg py-4">
+                        <i class="fas fa-shopping-cart mr-2"></i>
+                        Ajouter au panier
+                    </button>
+                    <button onclick="shareProduct()" class="btn btn-outline px-6">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                </div>
+
+                <div class="text-center text-sm text-gray-600">
+                    <i class="fas fa-shield-alt text-green-600 mr-1"></i>
+                    Commande sécurisée • Traitement manuel
+                </div>
+            </div>
+        </div>
+
+        <!-- Produits similaires -->
+        <div class="mt-16">
+            <h2 class="text-3xl font-bold mb-8 text-center" style="color: var(--primary-dark);" data-aos="fade-up">
+                Produits similaires
+            </h2>
+            <div id="similarProducts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+        </div>
+    `;
+
+    // Charger produits similaires
+    loadSimilarProducts(product);
+}
+
+function changeImage(src) {
+    document.getElementById('mainImage').src = src;
+}
+
+function addToCart() {
+    const slug = new URLSearchParams(window.location.search).get('slug');
+    loadData().then(data => {
+        const product = data.products.find(p => p.slug === slug);
+        if (product) {
+            Cart.add(product);
+        }
+    });
+}
+
+function shareProduct() {
+    loadData().then(data => {
+        const slug = new URLSearchParams(window.location.search).get('slug');
+        const product = data.products.find(p => p.slug === slug);
+        if (product) {
+            shareProduct(product);
+        }
+    });
+}
+
+function loadSimilarProducts(currentProduct) {
+    loadData().then(data => {
+        // Trouver produits de même catégorie ou avec intentions similaires
+        const similar = data.products.filter(p => 
+            p.slug !== currentProduct.slug && 
+            (p.category === currentProduct.category || 
+             p.intentions.some(i => currentProduct.intentions.includes(i)))
+        ).slice(0, 4);
+
+        displayProducts(similar, 'similarProducts');
+    });
+}
+</script>
+
+<?php include 'includes/footer.php'; ?>

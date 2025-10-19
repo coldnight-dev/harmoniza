@@ -1,12 +1,28 @@
 {
-  "name": "Harmon’Iza",
-  "short_name": "HarmonIza",
-  "icons": [
-    {"src": "https://source.unsplash.com/random/192x192/?icon,pastel", "sizes": "192x192", "type": "image/png"},
-    {"src": "https://source.unsplash.com/random/512x512/?icon,pastel", "sizes": "512x512", "type": "image/png"}
-  ],
-  "start_url": "/",
+  "name": "Harmon'Iza - Bijoux & Pierres Énergétiques",
+  "short_name": "Harmon'Iza",
+  "description": "Boutique de bijoux et pierres énergétiques - Harmonisez votre énergie, sublimez votre style",
+  "start_url": "/harmoniza/",
+  "scope": "/harmoniza/",
   "display": "standalone",
-  "background_color": "#FFB6C1",
-  "theme_color": "#FFD700"
+  "background_color": "#fff5f7",
+  "theme_color": "#f8b4d9",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192x192/f8b4d9/ffffff?text=HZ",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://via.placeholder.com/512x512/f8b4d9/ffffff?text=HZ",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "lifestyle", "wellness"],
+  "lang": "fr-FR",
+  "dir": "ltr"
 }
