@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic Console - Harmon'Iza</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            background: #1e1e1e;
+            color: #00ff00;
+        }
+        .test {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #333;
+            background: #2d2d2d;
+        }
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        .warning { color: #ffaa00; }
+        .info { color: #00aaff; }
+        h2 { color: #ffffff; border-bottom: 2px solid #00ff00; padding-bottom: 10px; }
+        pre { background: #000; padding: 10px; overflow-x: auto; }
+        button { 
+            background: #00ff00; 
+            color: #000; 
+            border: none; 
+            padding: 10px 20px; 
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+        }
+        button:hover { background: #00cc00; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Diagnostic Console Harmon'Iza</h1>
+    <p class="info">Ce fichier teste tous les composants de l'application</p>
+
+    <div class="test">
+        <h2>1. Vérification des fichiers JavaScript</h2>
+        <div id="test1">⏳ Test en cours...</div>
+    </div>
+
+    <div class="test">
+        <h2>2. Test de loadData()</h2>
+        <button onclick="testLoadData()">▶ Tester loadData()</button>
+        <div id="test2"></div>
+    </div>
+
+    <div class="test">
+        <h2>3. Test des données JSON</h2>
+        <button onclick="testJSON()">▶ Tester JSON</button>
+        <div id="test3"></div>
+    </div>
+
+    <div class="test">
+        <h2>4. Test de displayProducts()</h2>
+        <button onclick="testDisplay()">▶ Tester Display</button>
+        <div id="test4"></div>
+    </div>
+
+    <div class="test">
+        <h2>5. Console JavaScript</h2>
+        <div id="console" style="max-height: 300px; overflow-y: auto;"></div>
+    </div>
+
+    <!-- Charger les scripts comme sur les vraies pages -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="/harmoniza/js/cart.js"></script>
+    <script src="/harmoniza/js/main.js"></script>
+    <script src="/harmoniza/js/pwa.js"></script>
+
+    <script>
+        // Intercepter console.log
+        const consoleDiv = document.getElementById('console');
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+
+        function logToDiv(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const color = {
+                'info': 'info',
+                'error': 'error',
+                'warn': 'warning',
+                'success': 'success'
+            }[type];
+            consoleDiv.innerHTML += `<div class="${color}">[${time}] ${message}</div>`;
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            logToDiv(args.join(' '), 'info');
+        };
+
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            logToDiv('❌ ' + args.join(' '), 'error');
+        };
+
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            logToDiv('⚠️ ' + args.join(' '), 'warn');
+        };
+
+        // Test 1 : Vérification des scripts chargés
+        window.addEventListener('load', function() {
+            const test1 = document.getElementById('test1');
+            let results = [];
+
+            // Vérifier main.js
+            if (typeof loadData === 'function') {
+                results.push('<span class="success">✓ loadData() trouvé</span>');
+            } else {
+                results.push('<span class="error">✗ loadData() MANQUANT</span>');
+            }
+
+            if (typeof filterProducts === 'function') {
+                results.push('<span class="success">✓ filterProducts() trouvé</span>');
+            } else {
+                results.push('<span class="error">✗ filterProducts() MANQUANT</span>');
+            }
+
+            if (typeof displayProducts === 'function') {
+                results.push('<span class="success">✓ displayProducts() trouvé</span>');
+            } else {
+                results.push('<span class="error">✗ displayProducts() MANQUANT</span>');
+            }
+
+            // Vérifier cart.js
+            if (typeof Cart === 'object') {
+                results.push('<span class="success">✓ Cart trouvé</span>');
+            } else {
+                results.push('<span class="error">✗ Cart MANQUANT</span>');
+            }
+
+            // Vérifier variables globales
+            if (typeof productsData !== 'undefined') {
+                results.push('<span class="info">ℹ productsData: ' + (Array.isArray(productsData) ? productsData.length + ' items' : 'vide') + '</span>');
+            }
+
+            if (typeof stonesData !== 'undefined') {
+                results.push('<span class="info">ℹ stonesData: ' + (Array.isArray(stonesData) ? stonesData.length + ' items' : 'vide') + '</span>');
+            }
+
+            test1.innerHTML = results.join('<br>');
+        });
+
+        // Test 2 : loadData()
+        async function testLoadData() {
+            const test2 = document.getElementById('test2');
+            test2.innerHTML = '<span class="info">⏳ Chargement...</span>';
+
+            try {
+                console.log('Début test loadData()...');
+                
+                if (typeof loadData === 'undefined') {
+                    throw new Error('loadData() n\'est pas défini !');
+                }
+
+                const data = await loadData();
+                
+                console.log('✓ loadData() réussi');
+                console.log('Produits:', data.products.length);
+                console.log('Pierres:', data.stones.length);
+
+                test2.innerHTML = `
+                    <span class="success">✓ loadData() fonctionne !</span><br>
+                    <span class="info">Produits: ${data.products.length}</span><br>
+                    <span class="info">Pierres: ${data.stones.length}</span><br>
+                    <pre>${JSON.stringify(data.products[0], null, 2).substring(0, 500)}...</pre>
+                `;
+            } catch (error) {
+                console.error('Erreur loadData():', error);
+                test2.innerHTML = `<span class="error">✗ ERREUR: ${error.message}</span>`;
+            }
+        }
+
+        // Test 3 : JSON direct
+        async function testJSON() {
+            const test3 = document.getElementById('test3');
+            test3.innerHTML = '<span class="info">⏳ Test des URLs JSON...</span>';
+
+            const results = [];
+            const files = ['data/products.json', 'data/stones.json', 'manifest.json'];
+
+            for (const file of files) {
+                try {
+                    const url = window.location.origin + '/harmoniza/' + file;
+                    console.log('Test de:', url);
+                    
+                    const response = await fetch(url);
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        const count = Array.isArray(data) ? data.length : 'N/A';
+                        results.push(`<span class="success">✓ ${file}: OK (${count} items)</span>`);
+                        console.log('✓', file, 'accessible');
+                    } else {
+                        results.push(`<span class="error">✗ ${file}: HTTP ${response.status}</span>`);
+                        console.error('✗', file, 'HTTP', response.status);
+                    }
+                } catch (error) {
+                    results.push(`<span class="error">✗ ${file}: ${error.message}</span>`);
+                    console.error('✗', file, error);
+                }
+            }
+
+            test3.innerHTML = results.join('<br>');
+        }
+
+        // Test 4 : Display functions
+        async function testDisplay() {
+            const test4 = document.getElementById('test4');
+            test4.innerHTML = '<span class="info">⏳ Test display...</span>';
+
+            try {
+                // Créer un conteneur de test
+                const testContainer = document.createElement('div');
+                testContainer.id = 'testProducts';
+                testContainer.style.display = 'none';
+                document.body.appendChild(testContainer);
+
+                // Charger les données
+                const data = await loadData();
+                
+                // Tester displayProducts
+                if (typeof displayProducts === 'function') {
+                    displayProducts(data.products.slice(0, 2), 'testProducts');
+                    
+                    if (testContainer.innerHTML.length > 0) {
+                        test4.innerHTML = `
+                            <span class="success">✓ displayProducts() fonctionne !</span><br>
+                            <span class="info">HTML généré: ${testContainer.innerHTML.length} caractères</span>
+                        `;
+                        console.log('✓ displayProducts() OK');
+                    } else {
+                        test4.innerHTML = '<span class="error">✗ displayProducts() ne génère pas de HTML</span>';
+                    }
+                } else {
+                    test4.innerHTML = '<span class="error">✗ displayProducts() n\'existe pas</span>';
+                }
+
+                testContainer.remove();
+            } catch (error) {
+                console.error('Erreur test display:', error);
+                test4.innerHTML = `<span class="error">✗ ERREUR: ${error.message}</span>`;
+            }
+        }
+
+        // Log initial
+        console.log('=== Diagnostic Harmon\'Iza ===');
+        console.log('URL:', window.location.href);
+        console.log('Origin:', window.location.origin);
+        console.log('Navigateur:', navigator.userAgent);
+    </script>
+</body>
+</html>

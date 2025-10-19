@@ -50,17 +50,38 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
+    <!-- Scripts - ORDRE IMPORTANT -->
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-    <script src="https://app.santementale.org/harmoniza/js/cart.js"></script>
-    <script src="https://app.santementale.org/harmoniza/js/main.js"></script>
-    <script src="https://app.santementale.org/harmoniza/js/pwa.js"></script>
+    
+    <!-- Charger dans l'ordre : cart → main → pwa -->
+    <script src="/harmoniza/js/cart.js"></script>
+    <script src="/harmoniza/js/main.js"></script>
+    <script src="/harmoniza/js/pwa.js"></script>
+    
     <script>
-        // Initialiser AOS (animations)
-        AOS.init({
-            duration: 800,
-            once: true,
-            offset: 100
+        // Initialiser AOS (animations) après chargement
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100
+            });
+        }
+        
+        // Vérifier que les scripts essentiels sont chargés
+        window.addEventListener('load', function() {
+            if (typeof loadData === 'undefined') {
+                console.error('ERREUR CRITIQUE: main.js non chargé correctement');
+                console.log('Tentative de rechargement...');
+                
+                // Afficher un message à l'utilisateur
+                const banner = document.createElement('div');
+                banner.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#ff6b6b;color:white;padding:10px;text-align:center;z-index:9999;';
+                banner.innerHTML = '⚠️ Erreur de chargement. Rechargez la page (F5)';
+                document.body.appendChild(banner);
+            } else {
+                console.log('✓ Scripts chargés correctement');
+            }
         });
     </script>
 </body>
