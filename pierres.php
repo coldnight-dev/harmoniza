@@ -67,25 +67,36 @@ include 'includes/header.php';
 </div>
 
 <script>
-let allStones = [];
-let filteredStones = [];
-let currentIntention = 'all';
-
-loadData().then(data => {
-    allStones = data.stones;
-    filteredStones = allStones;
-    
-    // Créer les filtres d'intention
-    createIntentionFilters();
-    
-    // Créer l'index alphabétique
-    createAlphaIndex();
-    
-    // Afficher toutes les pierres
-    displayStones(allStones, 'stonesGrid');
+// Attendre que les scripts soient chargés
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof loadData === 'undefined') {
+        console.error('main.js pas encore chargé, retry...');
+        setTimeout(initPierres, 100);
+        return;
+    }
+    initPierres();
 });
 
-function createIntentionFilters() {
+function initPierres() {
+    let allStones = [];
+    let filteredStones = [];
+    let currentIntention = 'all';
+
+    loadData().then(data => {
+        allStones = data.stones;
+        filteredStones = allStones;
+        
+        // Créer les filtres d'intention
+        createIntentionFilters();
+        
+        // Créer l'index alphabétique
+        createAlphaIndex();
+        
+        // Afficher toutes les pierres
+        displayStones(allStones, 'stonesGrid');
+    });
+
+    window.createIntentionFilters = function() {
     const intentions = new Set();
     allStones.forEach(stone => {
         stone.intentions.forEach(int => intentions.add(int));

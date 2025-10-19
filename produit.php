@@ -17,32 +17,45 @@ include 'includes/header.php';
 </div>
 
 <script>
-const slug = new URLSearchParams(window.location.search).get('slug');
+// Attendre que les scripts soient chargés
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof loadData === 'undefined') {
+        console.error('main.js pas encore chargé, retry...');
+        setTimeout(initProduit, 100);
+        return;
+    }
+    initProduit();
+});
 
-if (!slug) {
-    window.location.href = '/harmoniza/boutique.php';
-}
+function initProduit() {
+    const slug = new URLSearchParams(window.location.search).get('slug');
 
-loadData().then(data => {
-    const product = data.products.find(p => p.slug === slug);
-    
-    if (!product) {
-        document.getElementById('productDetail').innerHTML = `
-            <div class="text-center py-20">
-                <i class="fas fa-exclamation-triangle text-6xl text-yellow-500 mb-4"></i>
-                <h2 class="text-3xl font-bold mb-4">Produit introuvable</h2>
-                <a href="/harmoniza/boutique.php" class="btn btn-primary">Retour à la boutique</a>
-            </div>
-        `;
+    if (!slug) {
+        window.location.href = '/harmoniza/boutique.php';
         return;
     }
 
-    // Mettre à jour le titre de la page
-    document.title = product.name + ' - Harmon\'Iza';
+    loadData().then(data => {
+        const product = data.products.find(p => p.slug === slug);
+        
+        if (!product) {
+            document.getElementById('productDetail').innerHTML = `
+                <div class="text-center py-20">
+                    <i class="fas fa-exclamation-triangle text-6xl text-yellow-500 mb-4"></i>
+                    <h2 class="text-3xl font-bold mb-4">Produit introuvable</h2>
+                    <a href="/harmoniza/boutique.php" class="btn btn-primary">Retour à la boutique</a>
+                </div>
+            `;
+            return;
+        }
 
-    // Afficher le produit
-    displayProductDetail(product, data.stones);
-});
+        // Mettre à jour le titre de la page
+        document.title = product.name + ' - Harmon\'Iza';
+
+        // Afficher le produit
+        displayProductDetail(product, data.stones);
+    });
+}
 
 function displayProductDetail(product, stones) {
     const container = document.getElementById('productDetail');

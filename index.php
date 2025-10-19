@@ -147,11 +147,23 @@ include 'includes/header.php';
 </button>
 
 <script>
-// Charger et afficher les produits en vedette
-loadData().then(data => {
-    const featured = data.products.filter(p => p.featured);
-    displayProducts(featured, 'featuredProducts');
+// Attendre que les scripts soient chargés
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof loadData === 'undefined') {
+        console.error('main.js pas encore chargé, retry...');
+        setTimeout(initIndex, 100);
+        return;
+    }
+    initIndex();
 });
+
+function initIndex() {
+    // Charger et afficher les produits en vedette
+    loadData().then(data => {
+        const featured = data.products.filter(p => p.featured);
+        displayProducts(featured, 'featuredProducts');
+    });
+}
 </script>
 
 <?php include 'includes/footer.php'; ?>

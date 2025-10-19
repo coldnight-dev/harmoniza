@@ -183,9 +183,6 @@ function toggleView(view) {
     } else {
         grid.classList.add('md:grid-cols-2', 'xl:grid-cols-3');
         grid.classList.remove('grid-cols-1');
-        document.getElementById('gridViewBtn').classList.add('bg-pink-50');
-        document.getElementById('listViewBtn').classList.remove('bg-pink-50');
-    }
 }
 </script>
 
