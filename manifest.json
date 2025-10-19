@@ -1,0 +1,12 @@
+{
+  "name": "Harmon’Iza",
+  "short_name": "HarmonIza",
+  "icons": [
+    {"src": "https://source.unsplash.com/random/192x192/?icon,pastel", "sizes": "192x192", "type": "image/png"},
+    {"src": "https://source.unsplash.com/random/512x512/?icon,pastel", "sizes": "512x512", "type": "image/png"}
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFB6C1",
+  "theme_color": "#FFD700"
+}

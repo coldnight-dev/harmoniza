@@ -1,0 +1,18 @@
+[
+  {"slug":"bracelet-amour","name":"Bracelet Amour","price":15.00,"images":["https://source.unsplash.com/random/300x300/?rose-quartz"],"stone":"Quartz Rose","intention":"amour","description":"Favorise l'amour et la compassion."},
+  {"slug":"collier-protection","name":"Collier Protection","price":20.00,"images":["https://source.unsplash.com/random/300x300/?amethyst"],"stone":"Améthyste","intention":"protection","description":"Protège contre les énergies négatives."},
+  {"slug":"pierre-ancrage","name":"Pierre Ancrage","price":10.00,"images":["https://source.unsplash.com/random/300x300/?hematite"],"stone":"Hématite","intention":"ancrage","description":"Ancre les énergies à la terre."},
+  {"slug":"bracelet-abondance","name":"Bracelet Abondance","price":18.00,"images":["https://source.unsplash.com/random/300x300/?citrine"],"stone":"Citrine","intention":"abondance","description":"Attire la prospérité."},
+  {"slug":"collier-serenite","name":"Collier Sérénité","price":22.00,"images":["https://source.unsplash.com/random/300x300/?aigue-marine"],"stone":"Aigue-Marine","intention":"sérénité","description":"Apporte calme et paix."},
+  {"slug":"bracelet-chance","name":"Bracelet Chance","price":12.00,"images":["https://source.unsplash.com/random/300x300/?aventurine"],"stone":"Aventurine","intention":"chance","description":"Porte-bonheur."},
+  {"slug":"collier-guerison","name":"Collier Guérison","price":25.00,"images":["https://source.unsplash.com/random/300x300/?jade"],"stone":"Jade","intention":"guérison","description":"Favorise la guérison physique."},
+  {"slug":"pierre-intuition","name":"Pierre Intuition","price":8.00,"images":["https://source.unsplash.com/random/300x300/?labradorite"],"stone":"Labradorite","intention":"intuition","description":"Améliore l'intuition."},
+  {"slug":"bracelet-protection","name":"Bracelet Protection","price":16.00,"images":["https://source.unsplash.com/random/300x300/?tourmaline"],"stone":"Tourmaline Noire","intention":"protection","description":"Bouclier énergétique."},
+  {"slug":"collier-amour","name":"Collier Amour","price":19.00,"images":["https://source.unsplash.com/random/300x300/?rhodonite"],"stone":"Rhodonite","intention":"amour","description":"Guérit les blessures émotionnelles."},
+  {"slug":"bracelet-ancrage","name":"Bracelet Ancrage","price":14.00,"images":["https://source.unsplash.com/random/300x300/?obsidienne"],"stone":"Obsidienne","intention":"ancrage","description":"Protection et ancrage."},
+  {"slug":"collier-abondance","name":"Collier Abondance","price":21.00,"images":["https://source.unsplash.com/random/300x300/?pyrite"],"stone":"Pyrite","intention":"abondance","description":"Attire la richesse."},
+  {"slug":"bracelet-serenite","name":"Bracelet Sérénité","price":17.00,"images":["https://source.unsplash.com/random/300x300/?lapis-lazuli"],"stone":"Lapis-Lazuli","intention":"sérénité","description":"Favorise la sagesse."},
+  {"slug":"collier-chance","name":"Collier Chance","price":13.00,"images":["https://source.unsplash.com/random/300x300/?amazonite"],"stone":"Amazonite","intention":"chance","description":"Équilibre émotionnel."},
+  {"slug":"bracelet-guerison","name":"Bracelet Guérison","price":23.00,"images":["https://source.unsplash.com/random/300x300/?malachite"],"stone":"Malachite","intention":"guérison","description":"Transformation et guérison."},
+  {"slug":"collier-intuition","name":"Collier Intuition","price":11.00,"images":["https://source.unsplash.com/random/300x300/?sodalite"],"stone":"Sodalite","intention":"intuition","description":"Clarté mentale."}
+]

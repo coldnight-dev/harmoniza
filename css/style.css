@@ -1,0 +1,30 @@
+/* Custom overrides pour Tailwind CDN */
+:root {
+  --rose-poudre: #FFB6C1;
+  --dore-doux: #FFD700;
+  --gris-clair: #F5F5F5;
+}
+
+body {
+  background-color: var(--gris-clair);
+  font-family: 'Poppins', sans-serif;
+}
+
+h1, h2 {
+  font-family: 'Playfair Display', serif;
+  color: var(--dore-doux);
+}
+
+.card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-cta {
+  background-color: var(--rose-poudre);
+  color: white;
+  &:hover {
+    background-color: #FF69B4;
+  }
+}
